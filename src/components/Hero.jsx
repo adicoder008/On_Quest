@@ -3,7 +3,7 @@ import React from 'react'
 const Hero = () => {
   return (
     <>
-    <div className="bg-[url('/image7.png')] flex justify-center items-center bg-cover w-screen h-[90vh] ">
+    <div className="bg-[url('/lake1.png')] flex justify-center items-center bg-cover w-screen h-[90vh] ">
       <div className='flex flex-col gap-4 text-white'>
         <div className='text-6xl text-center md:text-6xl font-arsenal font-[400]'>Your <span className='font-[500] italic '>virtual </span> travel companion</div>
         <div className='text-4xl text-center md:text-3xl'>Plan, Connect and Explore</div>
