@@ -3,24 +3,13 @@ import React from 'react'
 const Hero = () => {
   return (
     <>
-    <div className='static h-screen w-full'>
-      <div className='COLLAGE absolute pl-[-10px] bg-[#FBFBFB] w-full'>
-        <img src="/yourname.jpg" className='w-[22rem] relative rounded-md top-[11rem] left-[15rem] z-10' alt="" />
-        {/* <img src="/tanjiro.jpg" className='relative w-40 rounded-md top-[-9rem] left-[34rem] z-0 hidden' alt="" /> */}
-        <img src="/zenitsu.jpg" className='relative h-52 rounded-md top-[-12rem] left-[5rem] ' alt="" />
-        <img src="/itachi.jpg" className='relative h-52 w-80 rounded-md top-[-5rem] left-[4rem] ' alt="" />
-
-</div>
-<div className='relative top-[9rem] pl-[670px] flex flex-col text-black z-50'>
-    <p className='text-5xl font-light text-[#040520]'>HOLORAINBOW ACRYLIC </p>
-    <p className='text-5xl font-light text-[#040520]'>CHARMS</p>
-    <p className='text-2xl font-extralight my-4 font-sans'>all anime fans gather,including gojo,geto,tenjiro etc</p>
-    <button className='bg-[#FBE53A] mt-2 w-fit p-4'>JOIN NOW</button>
-</div>
-</div>
-
-
-
+    <div className="bg-[url('/image7.png')] flex justify-center items-center bg-cover w-screen h-[90vh] ">
+      <div className='flex flex-col gap-4 text-white'>
+        <div className='text-6xl text-center md:text-6xl font-arsenal font-[400]'>Your <span className='font-[500] italic '>virtual </span> travel companion</div>
+        <div className='text-4xl text-center md:text-3xl'>Plan, Connect and Explore</div>
+        <div className='flex justify-center'><button className='items-center w-fit bg-[#F86F0A] rounded-3xl px-4 py-3 text-black'>Plan Your Trip Now</button></div>
+      </div>
+    </div>
       
     </>
   )

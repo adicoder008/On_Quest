@@ -3,3 +3,62 @@
 @import "tailwindcss/components";
 
 @import "tailwindcss/utilities";
+
+
+.p200{
+    background-color: #FA841F;
+}
+.p400{
+    background-color: #F86F0A;
+}
+.p600{
+    background-color: #EA6100;
+}
+
+.s200{
+    background-color: #543F1D;
+}
+.s400{
+    background-color: #402B09;
+}
+.s600{
+    background-color: #35200C;
+}
+
+/* seperator */
+.seperator_p{
+    background-color: #EBE9E9;
+}
+.seperator_p_dark{
+    background-color: #EBE9E9;
+}
+
+/* bg-Color */
+.bgcolor_p{
+    background-color: #EBE9E9;
+}
+.bgcolor_s{
+    background-color: #F8F9FA;
+}
+.bgcolor_t_dark{
+    background-color: #EEEEEE;
+}
+.bgcolor_p_dark{
+    background-color: #121212;
+}
+.bgcolor_s_dark{
+    background-color: #1E1E1E;
+}
+.bgcolor_t_dark{
+    background-color: #2C2C2C;
+}
+
+/* fill color */
+.f_p{
+    color: #00B289;
+    opacity: 0.1;
+}
+.f_s{
+    color: #236981;
+    opacity: 0.1;
+}
