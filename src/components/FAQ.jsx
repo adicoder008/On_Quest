@@ -13,11 +13,11 @@ const faqs = [
       answer:
         "Mr. Pebbles is an AI-driven virtual travel guide that curates the best travel experiences for you. Just enter your destination and preferences, and he’ll generate a customized itinerary, suggest hidden gems, and assist you in real time during your journey.",
     },
-    {
-      question: "Can I use OnQuest for group travel?",
-      answer:
-        "Absolutely! OnQuest allows you to create a travel group, chat with friends, share your location, and split expenses effortlessly.",
-    },
+    // {
+    //   question: "Can I use OnQuest for group travel?",
+    //   answer:
+    //     "Absolutely! OnQuest allows you to create a travel group, chat with friends, share your location, and split expenses effortlessly.",
+    // },
     {
       question: "Does OnQuest help with local events and activities?",
       answer:
@@ -28,16 +28,16 @@ const faqs = [
       answer:
         "We offer a free version with essential trip planning features. Premium users get advanced AI recommendations, priority support, and exclusive local deals.",
     },
-    // {
-    //   question: "Can I modify my itinerary after it's generated?",
-    //   answer:
-    //     "Yes! You can edit your itinerary at any time. Our AI dynamically adjusts recommendations based on your changes, ensuring a flexible and seamless travel experience.",
-    // },
-    // {
-    //   question: "How does OnQuest handle expense splitting?",
-    //   answer:
-    //     "OnQuest has a built-in expense tracker that lets you split bills with friends seamlessly, just like Splitwise.",
-    // },
+    {
+      question: "Can I modify my itinerary after it's generated?",
+      answer:
+        "Yes! You can edit your itinerary at any time. Our AI dynamically adjusts recommendations based on your changes, ensuring a flexible and seamless travel experience.",
+    },
+    {
+      question: "How does OnQuest handle expense splitting?",
+      answer:
+        "OnQuest has a built-in expense tracker that lets you split bills with friends seamlessly, just like Splitwise.",
+    },
     // {
     //   question: "What makes OnQuest different from others?",
     //   answer:
