@@ -6,6 +6,7 @@ const Mid = () => {
     <div className='bg-[#F86F0A] py-10 px-4 bg-opacity-10 '>
       <div className='text-5xl pb-10 text-center font-arsenal font-[400] italic '>Evrything you need for a <span className='text-[#EA6100] font-[600]'>Perfect Trip !</span></div>
       <div className='flex flex-col justify-center items-center gap-6 xs:flex-row'>
+      {/* <div className='flex-1 flex flex-col w-[85vw] shadow-xl min-h-[30vh] bg-[#F86F0A] rounded-xl bg-opacity-10 gap-3 sm:w-[27vw]'> */}
         <div className='flex flex-col shadow-xl w-[85vw] min-h-[45vh] bg-[#FFFFFF] rounded-xl bg-opacity-80 gap-3 sm:w-[27vw]'>
             <img className=' p-4 rounded-xl' src="/Mid1.png" alt="" />
             <div className=' pl-4 text-xl font-[650]'>Mr. Pebbles</div>

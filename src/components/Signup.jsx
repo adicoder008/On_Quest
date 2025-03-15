@@ -6,7 +6,7 @@ const Signup = () => {
     <div className="bg-cover w-screen h-[87vh] bg-[url('/boat.jpg')] flex justify-center items-center">
         <div className='flex flex-col justify-center items-center'>
         <div className='text-center text-white text-6xl font-arsenal italic'>Ready to Make Your <span className='font-[500]'>Next</span> Trip <span className='font-[500]'>Unforgettable</span>?</div>
-        <div className='flex justify-center'><button className='items-center w-fit bg-[#F86F0A] text-[0.8rem] rounded-3xl px-4 py-3 text-black mt-4'>Sign Up & start planning</button></div>
+        <div className='flex justify-center'><button className='items-center w-fit bg-[#F86F0A] text-[1rem] rounded-3xl px-4 py-3 text-black mt-4'>Sign Up & start planning</button></div>
         </div>
         
     </div>

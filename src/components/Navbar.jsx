@@ -29,8 +29,8 @@ const Navbar = () => {
     //    </div>
       
       
-    // </div>
-    <div className="NAVBAR flex justify-between shadow-2xll items-center px-2 md:px-10 -my-2">
+    // </div>.............................
+    <div className="NAVBAR sticky flex justify-between shadow-2xll items-center px-2 md:px-10 my-2">
       <div className="flex">
         {/* Hamburger Menu */}
         <button
@@ -40,7 +40,7 @@ const Navbar = () => {
           <RxHamburgerMenu size={30} />
         </button>
 
-        <img src="/Light.png" className="w-[100px] md:w-[130px]" alt="" />
+        <img src="/OQLogo1.svg" className="w-[100px] md:w-[130px] p-3" alt="" />
       </div>
 
       {/* Desktop Menu */}
