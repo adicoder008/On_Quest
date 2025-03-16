@@ -10,7 +10,7 @@ const Navbar = () => {
     // <div className='NAVBAR flex justify-between items-center px-2 md:px-10 -my-2'>
     //   <div className='flex'>   
     //     <div className='md:hidden px-2 mt-3'><RxHamburgerMenu size={30}/></div>
-    //     <img src="/Light.png" className='w-[100px] md:w-[130px] ' alt="" />   
+    //     <img src="On_Quest/Light.png" className='w-[100px] md:w-[130px] ' alt="" />   
     //   </div>
 
     //   <div className=' hidden md:flex gap-[3vw] items-center '>
@@ -22,7 +22,7 @@ const Navbar = () => {
 
     //   </div>
 
-    //   <div className='flex'>   <div><img src="/UserIcon.png" className='w-[34px]' alt="" />  </div>
+    //   <div className='flex'>   <div><img src="On_Quest/UserIcon.png" className='w-[34px]' alt="" />  </div>
     //           <div className='flex justify-center items-center ml-2' >
     //             Sign-In/Up
     //           </div>
@@ -30,7 +30,7 @@ const Navbar = () => {
       
       
     // </div>.............................
-    <div className="NAVBAR sticky flex justify-between shadow-2xll items-center px-2 md:px-10 my-2">
+    <div className="NAVBAR sticky flex justify-between shadow-2xll items-center px-2 md:px-10">
       <div className="flex">
         {/* Hamburger Menu */}
         <button
@@ -40,8 +40,8 @@ const Navbar = () => {
           <RxHamburgerMenu size={30} />
         </button>
 
-        <img src="/OQLogo1.svg" className="w-[100px] md:w-[130px] p-3" alt="" />
-      </div>
+        <img src='On_Quest/OQLogoNew.svg' className="w-[100px] md:w-[130px] py-[0.7rem]" alt="" />
+      </div>  
 
       {/* Desktop Menu */}
       <div className="hidden md:flex gap-[3vw] items-center">
@@ -54,7 +54,7 @@ const Navbar = () => {
 
       {/* User Section */}
       <div className="flex">
-        <img src="/UserIcon.png" className="w-[34px]" alt="" />
+        <img src="On_Quest/UserIcon.png" className="w-[34px]" alt="" />
         <div className="flex justify-center items-center ml-2">
           Sign-In/Up
         </div>

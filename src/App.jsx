@@ -6,6 +6,7 @@ import HowItWorks from './components/HowItWorks'
 import Signup from './components/Signup'
 import Footer from './components/Footer'
 import FAQ from './components/FAQ'
+import PhoneSection from './components/PhoneSection'
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Hero/>
         <Mid/>
         <HowItWorks/>
+        <PhoneSection/>
         <FAQ/>
         <Signup/>
         <Footer/>

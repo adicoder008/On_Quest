@@ -54,25 +54,25 @@ const FAQ = () => {
   };
 
   return (
-    <div className="w-full bg-[#F86F0A] bg-opacity-10 mx-auto p-6">
+    <div className="w-full  bg-[#FFFFFF] bg-opacity-80 mx-auto p-6">
       <h2 className="text-4xl font-arsenal text-center mb-6 my-10 italic ">Frequently Asked <span className="text-[#F86F0A] font-arsenal italic">Questions ?</span></h2>
       <div className="space-y-4">
         {faqs.map((faq, index) => (
           <div key={index} className=" pb-2 border bg-[#FFFFFF] bg-opacity-80 rounded-xl">
-            {/* Question */}
-            <button
-              className="w-full flex justify-between items-center text-lg font-medium p-3 bg-[#FFFFFF] bg-opacity-80 rounded-lg"
-              onClick={() => toggleFAQ(index)}
-            >
-              {faq.question}
-              <FaChevronDown
-                className={`transform transition-transform duration-300 ${
-                  openIndex === index ? "rotate-180" : ""
-                }`}
-              />
-            </button>
+              
+                  <button
+                    className="w-full flex justify-between text-lg font-medium p-3 bg-[#F86F0A] bg-opacity-10 rounded-lg text-left"
+                    onClick={() => toggleFAQ(index)}
+                  >
+                    <div>{faq.question}</div>
+                    <FaChevronDown
+                    className={`transform transition-transform duration-300 ${
+                      openIndex === index ? "rotate-180" : ""
+                    }`}
+                    />
+                  </button>
 
-            {/* Answer (Sliding up/down) */}
+                  {/* Answer (Sliding up/down) */}
             <div
               className={`overflow-hidden transition-all duration-300 ${
                 openIndex === index ? "max-h-[500px] bg- opacity-100" : "max-h-0 opacity-0"
