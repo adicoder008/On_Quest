@@ -30,7 +30,7 @@ const Navbar = () => {
       
       
     // </div>.............................
-    <div className="NAVBAR sticky flex justify-between shadow-2xll items-center px-2 md:px-10">
+    <div className="NAVBAR sticky flex justify-between shadow-md items-center px-2 md:px-10">
       <div className="flex">
         {/* Hamburger Menu */}
         <button
