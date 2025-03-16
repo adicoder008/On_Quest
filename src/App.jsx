@@ -1,25 +1,14 @@
 import React from 'react'
-import Hero from './components/Hero'
-import Navbar from './components/Navbar'
-import Mid from './components/Mid'
-import HowItWorks from './components/HowItWorks'
-import Signup from './components/Signup'
-import Footer from './components/Footer'
-import FAQ from './components/FAQ'
-import PhoneSection from './components/PhoneSection'
+import Home from './pages/Home'
+
 
 const App = () => {
   return (
     <>    
 
-        <Navbar/>
-        <Hero/>
-        <Mid/>
-        <HowItWorks/>
-        <PhoneSection/>
-        <FAQ/>
-        <Signup/>
-        <Footer/>
+        <Home/>
+        
+        
         
     </>
   )
