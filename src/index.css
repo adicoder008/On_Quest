@@ -16,6 +16,9 @@
 * {
     font-family: 'Inter', sans-serif;
 }
+body {
+  overflow-x: hidden;
+}
 
   
 ::selection{

@@ -1,35 +1,14 @@
 import React,{useState} from 'react'
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoClose } from "react-icons/io5";
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
 
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedSection, setSelectedSection] = useState("home"); // Track the current
 
   return (
-    // <div className='NAVBAR flex justify-between items-center px-2 md:px-10 -my-2'>
-    //   <div className='flex'>   
-    //     <div className='md:hidden px-2 mt-3'><RxHamburgerMenu size={30}/></div>
-    //     <img src="On_Quest/Light.png" className='w-[100px] md:w-[130px] ' alt="" />   
-    //   </div>
-
-    //   <div className=' hidden md:flex gap-[3vw] items-center '>
-    //     <ul>Home</ul>
-    //     <ul>Trip Planner</ul>
-    //     <ul>Events</ul>
-    //     <ul>About Us</ul>
-    //     <ul>Contact Us</ul>
-
-    //   </div>
-
-    //   <div className='flex'>   <div><img src="On_Quest/UserIcon.png" className='w-[34px]' alt="" />  </div>
-    //           <div className='flex justify-center items-center ml-2' >
-    //             Sign-In/Up
-    //           </div>
-    //    </div>
-      
-      
-    // </div>.............................
     <div className="NAVBAR sticky flex justify-between shadow-md items-center px-2 md:px-10">
       <div className="flex">
         {/* Hamburger Menu */}
@@ -40,21 +19,21 @@ const Navbar = () => {
           <RxHamburgerMenu size={30} />
         </button>
 
-        <img src='On_Quest/OQLogoNew.svg' className="w-[100px] md:w-[130px] py-[0.7rem]" alt="" />
+        <img src='/OQLogoNew.svg' className="w-[100px] md:w-[130px] py-[0.7rem]" alt="" />
       </div>  
 
       {/* Desktop Menu */}
-      <div className="hidden md:flex gap-[3vw] items-center">
-        <ul>Home</ul>
-        <ul>Trip Planner</ul>
-        <ul>Events</ul>
-        <ul>About Us</ul>
-        <ul>Contact Us</ul>
+      <div className="hidden md:flex gap-[3vw] items-center cursor-pointer">
+        <Link to='/' >Home</Link>
+        <Link to='/TripPlanner' >Trip Planner</Link>
+        <Link to='/Events'>Events</Link>
+        <Link to='/About'>About Us</Link>
+        <Link to='/contact'>Contact Us</Link>
       </div>
 
       {/* User Section */}
       <div className="flex">
-        <img src="On_Quest/UserIcon.png" className="w-[34px]" alt="" />
+        <img src="/UserIcon.png" className="w-[34px]" alt="" />
         <div className="flex justify-center items-center ml-2">
           Sign-In/Up
         </div>

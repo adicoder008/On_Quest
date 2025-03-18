@@ -6,9 +6,9 @@ const Page2 = () => {
     <>
     <div className="flex justify-between gap-20 w-[80vw]">
           {/* LEFT INPUT */}
-          <div className="w-1/2 flex flex-col gap-2">
+          <div className="w-1/2 flex flex-col gap-4">
             <div className="font-arsenal font-[600] italic text-2xl">Select, start date</div>
-            <div className="text-[0.8rem]">The date you plan to depart.</div>
+            <div className="text-[0.9rem]">The date you plan to depart.</div>
     
             {/* Input with icon */}
             <div className="relative w-full">
@@ -22,9 +22,9 @@ const Page2 = () => {
           </div>
     
           {/* RIGHT INPUT */}
-          <div className="w-1/2 flex flex-col gap-2">
+          <div className="w-1/2 flex flex-col gap-4">
             <div className="font-arsenal font-[600] italic text-2xl">end date</div>
-            <div className="text-[0.8rem]">The date you plan to return.</div>
+            <div className="text-[0.9rem]">The date you plan to return.</div>
     
             {/* Input with icon */}
             <div className="relative w-full">

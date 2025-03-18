@@ -11,9 +11,9 @@ const Page6 = () => {
   };
 
   return (
-    <div className="w-full mx-auto p-6 flex flex-col gap-4 items-center justify-center">
+    <div className="w-full mx-auto flex flex-col gap-4 items-center justify-center">
       {/* Label */}
-      <div className="font-semibold text-4xl font-arsenal italic">
+      <div className="font-[600] text-3xl font-arsenal italic">
         What is your budget for this trip?
       </div>
       <div>Excluding major transportation fares like flights and trains</div>

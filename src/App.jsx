@@ -1,31 +1,30 @@
-import { Toaster } from "./components/ui/toaster"; 
-import { Toaster as SonnerToaster } from "./components/ui/sonner"; // Renamed for clarity
-import { TooltipProvider } from "./components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import FAQ from "./components/FAQ";
+import Footer from "./components/Footer";
+import Hero from "./components/Hero";
+import HowItWorks from "./components/HowItWorks";
+import First from "./components/Inputs/TripPlanner";
+import Mid from "./components/Mid";
+import Navbar from "./components/Navbar";
+import PhoneSection from "./components/PhoneSection";
+import Signup from "./components/Signup";
 import Trip from "./pages/Trip";
 
-const queryClient = new QueryClient();
 
-// Separate Providers for better organization
-const Providers = ({ children }) => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>{children}</TooltipProvider>
-  </QueryClientProvider>
-);
 
 const App = () => (
-  <Providers>
-    <Toaster />
-    <SonnerToaster />
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Trip />} />
-        {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        
-      </Routes>
-    </BrowserRouter>
-  </Providers>
+  
+  <div>
+    {/* <Navbar/>
+    <Hero/>
+    <Mid/>
+    <HowItWorks/>
+    <PhoneSection/>
+    <FAQ/>
+    <Signup/>
+    <Footer/> */}
+    <Trip/>
+  </div>
+    
 );
 
 export default App;
