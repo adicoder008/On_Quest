@@ -1,15 +1,15 @@
-
 import React from "react";
-import { Navbar } from "../components/trip-planner/Navbar";
+
 import { TripHeader } from "../components/trip-planner/TripHeader";
 import { FlightDetails } from "../components/trip-planner/FlightDetails";
 import { DayItinerary } from "../components/trip-planner/DayItinerary";
 import { TripSidebar } from "../components/trip-planner/TripSidebar";
 import { InfoButton } from "../components/trip-planner/InfoButton";
+import Navbar from "../components/Navbar";
 
 const Trip = () => {
   return (
-    <div className="bg-white overflow-hidden">
+    <div className="bg-white">
       <Navbar />
       <main className="flex flex-col">
         <div className="container mx-auto">
@@ -20,8 +20,11 @@ const Trip = () => {
           <div className="container mx-auto">
             <div className="gap-5 flex max-md:flex-col max-md:items-stretch">
               <div className="w-3/5 max-md:w-full max-md:ml-0">
-                <div className="flex w-full flex-col items-stretch max-md:max-w-full">
+                <div className="flex w-full flex-col  items-stretch max-md:max-w-full">
+                  <div className="">
                   <FlightDetails />
+                  </div>
+                  
 
                   <DayItinerary
                     dayNumber={1}

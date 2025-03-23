@@ -394,7 +394,7 @@ const Navbar = () => {
       </div>  
 
       {/* Desktop Menu */}
-      <div className="hidden md:flex gap-[3vw] items-center cursor-pointer">
+      <div className="hidden md:flex gap-[3vw]  items-center cursor-pointer">
         <Link to='/'>Home</Link>
         <Link to='/TripPlanner'>Trip Planner</Link>
         <Link to='/Events'>Events</Link>
@@ -504,7 +504,7 @@ const Navbar = () => {
           >
             {/* Modal Content */}
             <div 
-              className="flex w-full max-w-3xl h-auto bg-white rounded-xl overflow-hidden"
+              className="flex w-full max-w-2xl h-auto bg-white rounded-xl overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Left Image Section */}
