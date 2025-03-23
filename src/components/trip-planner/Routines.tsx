@@ -50,7 +50,7 @@ interface RoutinesProps {
                 {CheckIn}
               </div>
               <img src={image}
-                className="absolute h-full w-full object-cover inset-0" alt="" />
+                className=" h-[40vh] w-[27vw] object-cover inset-0" alt="" />
             </div>
           </div>
   
