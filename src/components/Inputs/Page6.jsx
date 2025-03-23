@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-const Page6 = () => {
-  const [budget, setBudget] = useState(1000); // Default value: ₹50,000
+const Page6 = ({ onSubmit }) => {
+  const [budget, setBudget] = useState(1000); // Default value: ₹1,000
 
   // Handle direct input changes
   const handleInputChange = (e) => {
@@ -27,7 +27,7 @@ const Page6 = () => {
         onChange={(e) => setBudget(e.target.value)}
         className="w-[50vw] h-1 rounded-lg appearance-none bg-gray-300 cursor-pointer"
         style={{
-          background: `linear-gradient(to right, #F86F0A ${(budget / 10000) * 100}%, #D1D5DB ${(budget / 100000) * 100}%)`, // Orange progress
+          background: `linear-gradient(to right, #F86F0A ${(budget / 10000) * 100}%, #D1D5DB ${(budget / 10000) * 100}%)`, // Orange progress
         }}
       />
 
