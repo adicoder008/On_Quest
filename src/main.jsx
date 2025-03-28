@@ -5,6 +5,8 @@ import './index.css'
 import App from './App.jsx'
 import TripPlanner from './components/Inputs/TripPlanner.jsx'
 import Trip from './pages/Trip.jsx'
+import Events1 from './components/Events/Events1.jsx'
+import Events2 from './components/Events/Events2.jsx'
 
 const router = createBrowserRouter([
   {
@@ -22,16 +24,16 @@ const router = createBrowserRouter([
     element: <Trip />,
     errorElement: <div>Not found</div>,
   },
-  // {
-  //   path: '/',
-  //   element: <App />,
-  //   errorElement: <div>Not found</div>,
-  // },
-  // {
-  //   path: '/',
-  //   element: <App />,
-  //   errorElement: <div>Not found</div>,
-  // },
+  {
+    path: '/About',
+    element: <Events1/>,
+    errorElement: <div>Not found</div>,
+  },
+  {
+    path: '/contact',
+    element: <Events2 />,
+    errorElement: <div>Not found</div>,
+  },
 ]);
 
 createRoot(document.getElementById('root')).render(
