@@ -5,7 +5,7 @@ import 'react-date-range/dist/styles.css'; // Main style file
 import 'react-date-range/dist/theme/default.css'; // Theme CSS file
 import { format } from 'date-fns';
 
-const Page2 = () => {
+const Page2 = ({ formData, updateFormData }) => {
   const [dateRange, setDateRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
@@ -27,10 +27,16 @@ const Page2 = () => {
     }
   }, []);
 
-  // Save dates to localStorage
+  // Save dates to localStorage and update formData
   const saveDates = (startDate, endDate) => {
     localStorage.setItem('startDate', startDate.toISOString());
     localStorage.setItem('endDate', endDate.toISOString());
+
+    // Update formData in the parent component
+    updateFormData({
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+    });
   };
 
   // Handle date range changes
@@ -115,10 +121,16 @@ const Page2 = () => {
 
       {/* Date Display Section */}
       <div className="flex flex-col md:flex-row gap-8 w-full">
-        
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold mb-2">Start Date</h3>
+          <p className="text-gray-700">{formatDate(dateRange.startDate)}</p>
+        </div>
+        <div className="flex-1">
+          <h3 className="text-lg font-semibold mb-2">End Date</h3>
+          <p className="text-gray-700">{formatDate(dateRange.endDate)}</p>
         </div>
       </div>
-   
+    </div>
   );
 };
 

@@ -11,8 +11,7 @@ import {
   sendPhoneVerificationCode, 
   verifyPhoneCode,
   signOut,
-  getCurrentUserData,
-  loadReCaptchaScript
+  getCurrentUserData
 } from '../lib/authService.cjs';
 
 const Navbar = () => {
@@ -81,21 +80,6 @@ const Navbar = () => {
       return;
     }
 
-    // Check if reCAPTCHA container exists
-    const recaptchaContainer = document.getElementById('recaptcha-container');
-    if (!recaptchaContainer) {
-      setError('reCAPTCHA container not found. Please try again.');
-      return;
-    }
-
-    // Clear previous reCAPTCHA instance
-    if (window.recaptchaVerifier) {
-      window.recaptchaVerifier.clear();
-      window.recaptchaVerifier = null;
-    }
-
-    // Load reCAPTCHA script if not already loaded
-    await loadReCaptchaScript();
 
     // Update UI state
     setError('');

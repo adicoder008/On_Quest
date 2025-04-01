@@ -11,28 +11,9 @@ import {
 import { auth, db } from './firebase.cjs';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 
-const loadReCaptchaScript = () => {
-  return new Promise((resolve, reject) => {
-    const script = document.createElement('script');
-    script.src = 'https://www.google.com/recaptcha/api.js';
-    script.async = true;
-    script.defer = true;
-    script.onload = resolve;
-    script.onerror = reject;
-    document.head.appendChild(script);
-  });
-};
 
-// Call this function before initializing the reCAPTCHA verifier
-loadReCaptchaScript()
-  .then(() => {
-    console.log('reCAPTCHA script loaded');
-    // Now you can safely initialize the reCAPTCHA verifier
-    setupRecaptcha('recaptcha-container');
-  })
-  .catch((error) => {
-    console.error('Failed to load reCAPTCHA script:', error);
-  });
+
+
 
 // Initialize recaptcha verifier - FIXED VERSION
 const setupRecaptcha = (containerId) => {
@@ -100,6 +81,7 @@ const signUpWithEmail = async (email, password, displayName) => {
 const signInWithEmail = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    localStorage.setItem('userId', JSON.stringify(userCredential.user.email));
     return userCredential.user;
   } catch (error) {
     console.error("Error signing in:", error);
@@ -126,6 +108,7 @@ const signInWithGoogle = async () => {
         authProvider: "google",
         createdAt: serverTimestamp()
       });
+      localStorage.setItem('userId', JSON.stringify(user.uid));
     }
     
     return user;
@@ -201,6 +184,7 @@ const signOut = async () => {
       try {
         window.recaptchaVerifier.clear();
         window.recaptchaVerifier = null;
+        window.location.href = '/home';
       } catch (e) {
         console.warn("Failed to clear reCAPTCHA on sign out", e);
       }
@@ -227,6 +211,26 @@ const getCurrentUserData = async () => {
     throw error;
   }
 };
+// Update user profile
+const updateUserProfile = async (userId, data) => {
+  try {
+    const userRef = doc(db, 'users', userId);
+    await updateDoc(userRef, data);
+    
+    // If displayName is updated, also update in Auth
+    if (data.displayName && auth.currentUser) {
+      await updateProfile(auth.currentUser, {
+        displayName: data.displayName,
+        photoURL: data.photoURL || auth.currentUser.photoURL
+      });
+    }
+    
+    return true;
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    throw error;
+  }
+};
 
 export {
   signUpWithEmail,
@@ -236,5 +240,5 @@ export {
   verifyPhoneCode,
   signOut,
   getCurrentUserData,
-  loadReCaptchaScript
+  updateUserProfile,
 };
