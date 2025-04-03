@@ -1,8 +1,19 @@
-
 import React, { useState } from "react";
 import { TimeSection } from "./TimeSection";
-import { HotelCard } from "./HotelCard";
 import { PlaceCard } from "./PlaceCard";
+import { Routines } from "./Routines";
+
+interface RoutineItem {
+  id: string;
+  CheckIn: string;
+}
+
+interface PlaceItem {
+  id: string;
+  image: string;
+  title: string;
+  description: string;
+}
 
 interface DayItineraryProps {
   dayNumber: number;
@@ -17,12 +28,96 @@ export const DayItinerary: React.FC<DayItineraryProps> = ({
 }) => {
   const [openSection, setOpenSection] = useState<string>("morning");
 
+  const [activeRoutineId, setActiveRoutineId] = useState<string | null>(null);
+
+const handleRoutineClick = (id: string) => {
+  setActiveRoutineId((prev) => (prev === id ? null : id)); // Toggle active state
+};
+
+  // Routines state
+  const [routines, setRoutines] = useState<RoutineItem[]>([
+    { id: "1", 
+      CheckIn: "Check-in to hostel/guesthouse (Anjuna, Baga, or Calangute)",
+      image: "https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/3040fb0f958bb432aa81dc2446917c4a03146d3a7f41bdb05993403f1411c581?placeholderIfAbsent=true", },
+    { id: "2", 
+      CheckIn: "Rent a scooter (~₹400/day)",
+      image: "https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/3040fb0f958bb432aa81dc2446917c4a03146d3a7f41bdb05993403f1411c581?placeholderIfAbsent=true",
+     }
+  ]);
+
+  // Places state
+  const [places, setPlaces] = useState<PlaceItem[]>([
+    {
+      id: "1",
+      image: "https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/3040fb0f958bb432aa81dc2446917c4a03146d3a7f41bdb05993403f1411c581?placeholderIfAbsent=true",
+      title: "Arambol Beach",
+      description: "Discover the magic of Arambol Beach – where golden sands, chill vibes, and epic sunsets await!"
+    },
+    {
+      id: "2",
+      image: "https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/3040fb0f958bb432aa81dc2446917c4a03146d3a7f41bdb05993403f1411c581?placeholderIfAbsent=true",
+      title: "Calangute Beach",
+      description: "Experience the vibrant atmosphere of Calangute Beach – Goa's most popular shoreline!"
+    }
+  ]);
+
   const handleToggle = (section: string) => {
     setOpenSection(openSection === section ? "" : section);
   };
 
+  // Move routine up
+  const handleMoveUpRoutine = (index: number) => {
+    if (index > 0) {
+      const newRoutines = [...routines];
+      [newRoutines[index], newRoutines[index - 1]] = [newRoutines[index - 1], newRoutines[index]];
+      setRoutines(newRoutines);
+    }
+  };
+
+  // Move routine down
+  const handleMoveDownRoutine = (index: number) => {
+    if (index < routines.length - 1) {
+      const newRoutines = [...routines];
+      [newRoutines[index], newRoutines[index + 1]] = [newRoutines[index + 1], newRoutines[index]];
+      setRoutines(newRoutines);
+    }
+  };
+
+  // Delete routine
+  const handleDeleteRoutine = (id: string) => {
+    setRoutines(routines.filter((routine) => routine.id !== id));
+  };
+
+  // Move place up
+  const handleMoveUpPlace = (index: number) => {
+    if (index > 0) {
+      const newPlaces = [...places];
+      [newPlaces[index], newPlaces[index - 1]] = [newPlaces[index - 1], newPlaces[index]];
+      setPlaces(newPlaces);
+    }
+  };
+
+  // Move place down
+  const handleMoveDownPlace = (index: number) => {
+    if (index < places.length - 1) {
+      const newPlaces = [...places];
+      [newPlaces[index], newPlaces[index + 1]] = [newPlaces[index + 1], newPlaces[index]];
+      setPlaces(newPlaces);
+    }
+  };
+
+  // Delete place
+  const handleDeletePlace = (id: string) => {
+    setPlaces(places.filter((place) => place.id !== id));
+  };
+
+  const handleAddRoutine = (text: string) => {
+    const newRoutine = { id: Date.now().toString(), CheckIn: text ,image: "default_image_url_here"};
+    setRoutines([...routines, newRoutine]);
+  };
+
   return (
-    <section className="w-full overflow-hidden mt-8 px-6 py-1 max-md:max-w-full max-md:px-5">
+    <section className="w-full overflow-hidden mt-8 pr-6 py-1 max-md:max-w-full max-md:px-5">
       <h2 className="text-black text-2xl font-bold max-md:max-w-full">
         Day {dayNumber}:{" "}
         <span className="font-normal">
@@ -39,90 +134,41 @@ export const DayItinerary: React.FC<DayItineraryProps> = ({
           onToggle={() => handleToggle("morning")}
         >
           <div className="flex flex-col gap-3">
-            <div className="bg-white shadow-[2px_4px_4px_rgba(0,0,0,0.25)] flex w-full flex-col items-stretch justify-center px-6 py-4 rounded-lg border-l-8 border-white">
-              <div className="text-base text-black font-medium py-2">
-                Rent a scooter (~₹400/day)
-              </div>
-            </div>
+            {/* Mapping routines dynamically */}
+            {routines.map((routine, index) => (
+              <Routines
+                key={routine.id}
+                image={routine.image}
+                CheckIn={routine.CheckIn}
+                id={routine.id}
+                onMoveUp={() => handleMoveUpRoutine(index)}
+                onMoveDown={() => handleMoveDownRoutine(index)}
+                onDelete={() => handleDeleteRoutine(routine.id)}
+                isActive={activeRoutineId === routine.id} // Only the clicked one is active
+                whenClicked={handleRoutineClick}
+                onAdd={handleAddRoutine} // Pass function to add routine
+              />
+            ))}
 
-            <div className="shadow-[4px_4px_10px_0px_rgba(0,0,0,0.10)] w-full">
-              <div className="bg-white shadow-[2px_4px_4px_rgba(0,0,0,0.1)] flex w-full flex-col px-6 py-4 rounded-lg border-l-8 border-[rgba(250,132,31,1)]">
-                <div className="text-base text-black font-medium py-2">
-                  Check-in to hostel/guesthouse (Anjuna, Baga, or Calangute)
-                </div>
-                <div className="mt-1">
-                  <div className="text-sm text-[rgba(139,138,143,1)]">
-                    Suggested
-                  </div>
-                  <div className="overflow-x-auto flex gap-3 mt-2.5">
-                    <HotelCard
-                      name="Hotel Baga Bay"
-                      location="Goa"
-                      price="₹ 2,039"
-                      rating="3.8/5"
-                      ratingCount="40"
-                      image="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/ded8dfbec0c83b36736eb7816d24317ba3499971c3b955ae179ae55d445677f2?placeholderIfAbsent=true"
-                      overlay="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/ce1b110a62e3dc64506571379741db5f8aba30bb9ba86cc91e6be23b76e03b1b?placeholderIfAbsent=true"
-                    />
-                    {/* Add more hotel cards as needed */}
-                  </div>
-                  <div className="text-sm text-[rgba(53,138,233,1)] text-center mt-2.5">
-                    See More
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <PlaceCard
-              image="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/3040fb0f958bb432aa81dc2446917c4a03146d3a7f41bdb05993403f1411c581?placeholderIfAbsent=true"
-              title="Arambol Beach"
-              description="Discover the magic of Arambol Beach – where golden sands, chill vibes, and epic sunsets await!"
-            />
-          </div>
-        </TimeSection>
-
-        <TimeSection
-          title="Afternoon"
-          icon="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/8cd35b1e1cd91d36bd698c0f124d95956112a28c3dfa8b1db6919ebb9061be0c?placeholderIfAbsent=true"
-          toggleIcon="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/fb7b68e83f6616cf802b0d306adf8d1e72b4992c0685c951cc8905e56b8613d8?placeholderIfAbsent=true"
-          isOpen={openSection === "afternoon"}
-          onToggle={() => handleToggle("afternoon")}
-        >
-          <div className="flex flex-col gap-3">
-            <PlaceCard
-              image="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/3040fb0f958bb432aa81dc2446917c4a03146d3a7f41bdb05993403f1411c581?placeholderIfAbsent=true"
-              title="Calangute Beach"
-              description="Experience the vibrant atmosphere of Calangute Beach – Goa's most popular shoreline!"
-            />
-            <PlaceCard
-              image="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/3040fb0f958bb432aa81dc2446917c4a03146d3a7f41bdb05993403f1411c581?placeholderIfAbsent=true"
-              title="Baga Beach"
-              description="Enjoy water sports and beachside activities at the energetic Baga Beach"
-            />
-          </div>
-        </TimeSection>
-
-        <TimeSection
-          title="Night"
-          icon="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/df12da01b4042d55071f88bb4bb92985c6a6992244033a6c241a7c5c2b931875?placeholderIfAbsent=true"
-          toggleIcon="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/9f8e48378c0f73444ad3d3375d2a5adce12fd34c36f5db71b322bb5d47ef6324?placeholderIfAbsent=true"
-          isOpen={openSection === "night"}
-          onToggle={() => handleToggle("night")}
-        >
-          <div className="flex flex-col gap-3">
-            <PlaceCard
-              image="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/3040fb0f958bb432aa81dc2446917c4a03146d3a7f41bdb05993403f1411c581?placeholderIfAbsent=true"
-              title="Tito's Lane"
-              description="Experience Goa's legendary nightlife at Tito's Lane – the heart of party central!"
-            />
-            <div className="bg-white shadow-[2px_4px_4px_rgba(0,0,0,0.25)] flex w-full flex-col items-stretch justify-center px-6 py-4 rounded-lg border-l-8 border-white">
-              <div className="text-base text-black font-medium py-2">
-                Dinner at a beachside shack (~₹500-800)
-              </div>
-            </div>
+            {/* Mapping places dynamically */}
+            {places.map((place, index) => (
+              <PlaceCard
+                id={place.id}
+                key={place.id}
+                image={place.image}
+                title={place.title}
+                description={place.description}
+                onMoveUp={() => handleMoveUpPlace(index)}
+                onMoveDown={() => handleMoveDownPlace(index)}
+                onDelete={() => handleDeletePlace(place.id)}
+                isActive={activeRoutineId === place.id}
+                whenClicked={handleRoutineClick}                
+              />
+            ))}
           </div>
         </TimeSection>
       </div>
     </section>
   );
 };
+

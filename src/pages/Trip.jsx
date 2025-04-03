@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
@@ -8,6 +9,7 @@ import { FlightDetails } from "../components/trip-planner/transport/FlightDetail
 import { DayItinerary } from "../components/trip-planner/DayItinerary";
 import { TripSidebar } from "../components/trip-planner/TripSidebar";
 import { InfoButton } from "../components/trip-planner/InfoButton";
+
 import TransportOptionsDisplay from "@/components/trip-planner/transport/transportOptions";
 import Navbar from "../components/Navbar";
 
@@ -77,7 +79,7 @@ const Trip = () => {
   }
 
   return (
-    <div className="bg-white overflow-hidden">
+    <div className="bg-white">
       <Navbar />
       <main className="flex flex-col">
         <div className="container mx-auto">
@@ -91,6 +93,7 @@ const Trip = () => {
           <div className="container mx-auto">
             <div className="gap-5 flex max-md:flex-col max-md:items-stretch">
               <div className="w-3/5 max-md:w-full max-md:ml-0">
+
                 <div className="flex w-full flex-col items-stretch max-md:max-w-full">
                   {/* Day selector - only shown if trip has days */}
                   {trip.days && trip.days.length > 0 && (
@@ -106,6 +109,13 @@ const Trip = () => {
                       ))}
                     </div>
                   )}
+
+                <div className="flex w-full flex-col  items-stretch max-md:max-w-full">
+                  <div className="">
+                  <FlightDetails />
+                  </div>
+                  
+
 
                   <FlightDetails />
 

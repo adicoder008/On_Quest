@@ -3,19 +3,19 @@ import { FlightCard } from "./FlightCard";
 
 export const FlightDetails = () => {
   return (
-    <div className="max-md:max-w-full">
-      <div className="flex w-[732px] max-w-full flex-col overflow-hidden pl-6 max-md:pl-5">
+    <div className="max-md:max-w-full overflow-x-auto">
+      <div className="flex w-[732px] max-w-full flex-col overflow-hidden max-md:pl-5">
         <div className="font-normal max-md:max-w-full">
           <h2 className="text-black text-2xl">
             <span className="font-bold">Flight</span> Details (Delhi to Goa)
           </h2>
-          <p className="self-stretch gap-2 text-base text-black text-center mt-1.5 max-md:max-w-full">
+          <p className="self-stretch gap-2 text-base text-black mt-1.5 max-md:max-w-full">
             Here are some flight options from Delhi (DEL) to Goa (GOI) on March
             15, 2025
           </p>
         </div>
 
-        <div className="overflow-x-auto flex gap-3 flex-wrap mt-3 max-md:max-w-full">
+        <div className="overflow-x-auto flex gap-3 p-3 mt-3 ">
           <FlightCard
             airline="Indigo"
             flightNumber="6E 2603"
@@ -69,10 +69,11 @@ export const FlightDetails = () => {
             logo="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/7f07e118a72e5aa15917ae54ea7af35938eee6b092de817196d6a69f3f0c4ab2?placeholderIfAbsent=true"
           />
         </div>
-
+        <div className=" flex">
         <button className="text-[rgba(53,138,233,1)] text-sm font-normal text-center mt-3">
           See More
         </button>
+        </div>
       </div>
     </div>
   );

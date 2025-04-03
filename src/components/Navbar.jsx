@@ -57,6 +57,17 @@ const Navbar = () => {
     return () => unsubscribe();
   }, []);
 
+
+  useEffect(() => {
+    // Set active menu based on URL
+    const path = location.pathname;
+    if (path === "/") setSelectedSection("home");
+    else if (path.includes("TripPlanner")) setSelectedSection("Trip Planner");
+    else if (path.includes("Events")) setSelectedSection("Events");
+    else if (path.includes("About")) setSelectedSection("About Us");
+    else if (path.includes("Contact")) setSelectedSection("Contact Us");
+  }, [location.pathname]);
+
   const toggleAuthModal = () => {
     setShowAuthModal(!showAuthModal);
     resetForm();
@@ -378,12 +389,17 @@ const Navbar = () => {
       </div>  
 
       {/* Desktop Menu */}
-      <div className="hidden md:flex gap-[3vw] items-center cursor-pointer">
-        <Link to='/'>Home</Link>
-        <Link to='/TripPlanner'>Trip Planner</Link>
-        <Link to='/Events'>Events</Link>
-        <Link to='/About'>About Us</Link>
-        <Link to='/contact'>Contact Us</Link>
+      <div className="hidden md:flex gap-[3vw]  items-center cursor-pointer">
+        <Link to='/' className={`hover:text-black ${selectedSection === "home" ? "text-orange-500 hover:text-orange-500" : "text-gray-600"}`} 
+          onClick={() => setSelectedSection("home")}>Home</Link>
+        <Link to='/TripPlanner' className={`hover:text-black ${selectedSection === "Trip Planner" ? "text-orange-500 hover:text-orange-500" : "text-gray-600"}`} 
+          onClick={() => setSelectedSection("Trip Planner")}>Trip Planner</Link>
+        <Link to='/Events' className={`hover:text-black ${selectedSection === "Events" ? "text-orange-500 hover:text-orange-500" : "text-gray-600"}`} 
+          onClick={() => setSelectedSection("Events")}>Events</Link>
+        <Link to='/About' className={`hover:text-black ${selectedSection === "About Us" ? "text-orange-500 hover:text-orange-500" : "text-gray-600"}`} 
+          onClick={() => setSelectedSection("About Us")}>About Us</Link>
+        <Link to='/contact' className={`hover:text-black ${selectedSection === "Contact Us" ? "text-orange-500 hover:text-orange-500" : "text-gray-600"}`} 
+          onClick={() => setSelectedSection("Contact Us")}>Contact Us</Link>
       </div>
 
       {/* User Section */}
@@ -488,7 +504,7 @@ const Navbar = () => {
           >
             {/* Modal Content */}
             <div 
-              className="flex w-full max-w-3xl h-auto bg-white rounded-xl overflow-hidden"
+              className="flex w-full max-w-2xl h-auto bg-white rounded-xl overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Left Image Section */}

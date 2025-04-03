@@ -28,7 +28,7 @@ export const FlightCard: React.FC<FlightCardProps> = ({
   logo,
 }) => {
   return (
-    <div className="items-stretch border border-[color:var(--Label-Tertiary,#C5C4C7)] shadow-[4px_4px_10px_0px_rgba(0,0,0,0.10)] bg-white flex min-w-60 flex-col justify-center w-[281px] px-4 py-3 rounded-lg border-solid">
+    <div className="items-stretch border border-[color:var(--Label-Tertiary,#C5C4C7)] shadow-[4px_4px_10px_0px_rgba(0,0,0,0.10)] bg-white flex flex-col justify-center sm:w-[281px] px-4 py-3 rounded-lg border-solid">
       <div className="w-full">
         <div className="flex w-full gap-[40px_100px] justify-between">
           <div className="flex items-center gap-2 font-normal">
@@ -63,7 +63,7 @@ export const FlightCard: React.FC<FlightCardProps> = ({
               <div className="bg-[rgba(40,167,69,1)] flex min-h-0.5 w-full mt-1 rounded-lg" />
               <div className="mt-1">Non stop</div>
             </div>
-            <div className="self-stretch flex flex-col w-16 my-auto">
+            <div className="self-stretch flex flex-col w-16 my-auto justify-end items-end">
               <div className="text-[rgba(139,138,143,1)] text-[10px]">
                 {arrivalDate}
               </div>

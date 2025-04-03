@@ -14,15 +14,15 @@ import Trip from "./pages/Trip";
 const App = () => (
   
   <div>
-    {/* <Navbar/>
+     <Navbar/>
     <Hero/>
     <Mid/>
     <HowItWorks/>
     <PhoneSection/>
     <FAQ/>
     <Signup/>
-    <Footer/> */}
-    <Trip/>
+    <Footer/> 
+    
   </div>
     
 );
