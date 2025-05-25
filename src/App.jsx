@@ -8,13 +8,15 @@ import Navbar from "./components/Navbar";
 import PhoneSection from "./components/PhoneSection";
 import Signup from "./components/Signup";
 import Trip from "./pages/Trip";
+import Feed from "./pages/Feed";
+
 
 
 
 const App = () => (
   
   <div>
-     <Navbar/>
+    <Navbar/>
     <Hero/>
     <Mid/>
     <HowItWorks/>
@@ -22,9 +24,8 @@ const App = () => (
     <FAQ/>
     <Signup/>
     <Footer/> 
-    
+  
   </div>
-    
 );
 
 export default App;

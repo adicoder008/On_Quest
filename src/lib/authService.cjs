@@ -11,8 +11,13 @@ import {
 import { auth, db } from './firebase.cjs';
 import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
 
-
-
+const GOOGLE_AVATAR_OPTIONS = [
+  'https://www.gstatic.com/webp/gallery/1.jpg',
+  'https://www.gstatic.com/webp/gallery/2.jpg',
+  'https://www.gstatic.com/webp/gallery/3.jpg',
+  'https://www.gstatic.com/webp/gallery/4.jpg',
+  'https://www.gstatic.com/webp/gallery/5.jpg'
+];
 
 
 // Initialize recaptcha verifier - FIXED VERSION
@@ -52,30 +57,7 @@ const setupRecaptcha = (containerId) => {
     throw error;
   }
 };
-// Email signup
-const signUpWithEmail = async (email, password, displayName) => {
-  try {
-    // Create user account
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    
-    // Update profile
-    await updateProfile(user, { displayName });
-    
-    // Create user document in Firestore
-    await setDoc(doc(db, "users", user.uid), {
-      displayName,
-      email,
-      authProvider: "email",
-      createdAt: serverTimestamp()
-    });
-    
-    return user;
-  } catch (error) {
-    console.error("Error signing up:", error);
-    throw error;
-  }
-};
+
 
 // Email signin
 const signInWithEmail = async (email, password) => {
@@ -89,34 +71,7 @@ const signInWithEmail = async (email, password) => {
   }
 };
 
-// Google signin/signup
-const signInWithGoogle = async () => {
-  try {
-    const googleProvider = new GoogleAuthProvider();
-    const result = await signInWithPopup(auth, googleProvider);
-    const user = result.user;
-    
-    // Check if user exists in database
-    const userDoc = await getDoc(doc(db, "users", user.uid));
-    
-    // If user doesn't exist, create a new document
-    if (!userDoc.exists()) {
-      await setDoc(doc(db, "users", user.uid), {
-        displayName: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        authProvider: "google",
-        createdAt: serverTimestamp()
-      });
-      localStorage.setItem('userId', JSON.stringify(user.uid));
-    }
-    
-    return user;
-  } catch (error) {
-    console.error("Error signing in with Google:", error);
-    throw error;
-  }
-};
+
 
 // Phone number - send verification code - FIXED VERSION
 const sendPhoneVerificationCode = async (phoneNumber, recaptchaContainerId) => {
@@ -139,41 +94,7 @@ const sendPhoneVerificationCode = async (phoneNumber, recaptchaContainerId) => {
   }
 };
 
-// Phone number - verify code and sign in
-const verifyPhoneCode = async (verificationCode, displayName = null) => {
-  try {
-    if (!window.confirmationResult) {
-      throw new Error("No verification was sent. Please request a verification code first.");
-    }
-    
-    const confirmationResult = window.confirmationResult;
-    const userCredential = await confirmationResult.confirm(verificationCode);
-    const user = userCredential.user;
-    
-    // If displayName is provided (for new users), update the profile
-    if (displayName && !user.displayName) {
-      await updateProfile(user, { displayName });
-    }
-    
-    // Check if user exists in database
-    const userDoc = await getDoc(doc(db, "users", user.uid));
-    
-    // If user doesn't exist, create a new document
-    if (!userDoc.exists()) {
-      await setDoc(doc(db, "users", user.uid), {
-        displayName: displayName || `User${user.uid.substring(0, 5)}`,
-        phoneNumber: user.phoneNumber,
-        authProvider: "phone",
-        createdAt: serverTimestamp()
-      });
-    }
-    
-    return user;
-  } catch (error) {
-    console.error("Error verifying code:", error);
-    throw error;
-  }
-};
+
 
 // Sign out
 const signOut = async () => {
@@ -211,26 +132,167 @@ const getCurrentUserData = async () => {
     throw error;
   }
 };
-// Update user profile
-const updateUserProfile = async (userId, data) => {
-  try {
-    const userRef = doc(db, 'users', userId);
-    await updateDoc(userRef, data);
-    
-    // If displayName is updated, also update in Auth
-    if (data.displayName && auth.currentUser) {
-      await updateProfile(auth.currentUser, {
-        displayName: data.displayName,
-        photoURL: data.photoURL || auth.currentUser.photoURL
-      });
+const createUserProfile = async (userId, profileData) => {
+  const userRef = doc(db, 'users', userId);
+  
+  await setDoc(userRef, {
+    ...profileData,
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+    followers: [],
+    following: [],
+    postsCount: 0,
+    title: 'Travel Enthusiast',
+    isVerified: false,
+    preferences: {
+      notifications: true,
+      theme: 'light'
     }
-    
-    return true;
+  });
+};
+
+// Email signup
+const signUpWithEmail = async (email, password, displayName, selectedAvatar) => {
+  try {
+    // Validate inputs
+    if (!email || !password || !displayName) {
+      throw new Error('All fields are required');
+    }
+    let avatarUrl = '';
+    if (typeof selectedAvatar === 'string') {
+      avatarUrl = selectedAvatar;
+    } else {
+      // Fallback to random Google avatar if invalid
+      avatarUrl = GOOGLE_AVATAR_OPTIONS[
+        Math.floor(Math.random() * GOOGLE_AVATAR_OPTIONS.length)
+      ];
+    }
+
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      .catch(error => {
+        // Handle specific Firebase errors
+        if (error.code === 'auth/email-already-in-use') {
+          throw new Error('Email already in use. Please sign in instead.');
+        } else if (error.code === 'auth/weak-password') {
+          throw new Error('Password should be at least 6 characters');
+        } else if (error.code === 'auth/network-request-failed') {
+          throw new Error('Network error. Please check your internet connection.');
+        } else {
+          throw new Error('Sign up failed. Please try again later.');
+        }
+      });
+
+    const user = userCredential.user;
+
+    // Update profile with retry logic
+    try {
+      await updateProfile(user, {
+        displayName,
+        photoURL: avatarUrl
+      });
+    } catch (profileError) {
+      console.warn("Profile update failed, continuing:", profileError);
+    }
+
+    await createUserProfile(user.uid, {
+      uid: user.uid,
+      displayName,
+      email,
+      photoURL: avatarUrl,
+      authProvider: "email",
+      emailVerified: user.emailVerified
+    });
+
+    return user;
   } catch (error) {
-    console.error("Error updating profile:", error);
+    console.error("Auth error:", error);
     throw error;
   }
 };
+// Google signin/signup
+const signInWithGoogle = async () => {
+  try {
+    const googleProvider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, googleProvider);
+    const user = result.user;
+    
+    // Check if user exists in database
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    
+    // If user doesn't exist, create a new document
+    if (!userDoc.exists()) {
+      await createUserProfile(user.uid, {
+        uid: user.uid,
+        displayName: user.displayName,
+        email: user.email,
+        photoURL: user.photoURL,
+        authProvider: "google",
+        emailVerified: user.emailVerified
+      });
+    }
+    
+    return user;
+  } catch (error) {
+    console.error("Error signing in with Google:", error);
+    throw error;
+  }
+};
+
+// Phone number - verify code and sign in
+const verifyPhoneCode = async (verificationCode, displayName = null) => {
+  try {
+    if (!window.confirmationResult) {
+      throw new Error("No verification was sent. Please request a verification code first.");
+    }
+    
+    const confirmationResult = window.confirmationResult;
+    const userCredential = await confirmationResult.confirm(verificationCode);
+    const user = userCredential.user;
+    
+    // Generate a default display name if not provided
+    const finalDisplayName = displayName || `User${user.uid.substring(0, 5)}`;
+    
+    // Update Firebase auth profile if displayName was provided
+    if (displayName) {
+      await updateProfile(user, { displayName: finalDisplayName });
+    }
+
+    // Check if user exists in database
+    const userDoc = await getDoc(doc(db, "users", user.uid));
+    
+    // If user doesn't exist, create a new document
+    if (!userDoc.exists()) {
+      await createUserProfile(user.uid, {
+        uid: user.uid,
+        displayName: finalDisplayName,
+        phoneNumber: user.phoneNumber,
+        authProvider: "phone",
+        emailVerified: false
+      });
+    }
+    
+    return user;
+  } catch (error) {
+    console.error("Error verifying code:", error);
+    throw error;
+  }
+};
+
+// Update user profile data
+const updateUserProfile = async (userId, profileData) => {
+  try {
+    const userRef = doc(db, 'users', userId);
+    await updateDoc(userRef, {
+      ...profileData,
+      updatedAt: serverTimestamp()
+    });
+  } catch (error) {
+    console.error("Error updating user profile:", error);
+    throw error;
+  }
+};
+
+
 
 export {
   signUpWithEmail,
@@ -241,4 +303,5 @@ export {
   signOut,
   getCurrentUserData,
   updateUserProfile,
+  createUserProfile
 };

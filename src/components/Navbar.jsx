@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoClose } from "react-icons/io5";
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import { auth } from '../lib/firebase.cjs';
 import { onAuthStateChanged } from 'firebase/auth';
+import Feed from '../pages/Feed';
+import { AvatarSelector } from './AvatarSelector';
 import { 
   signUpWithEmail, 
   signInWithEmail, 
@@ -13,12 +15,16 @@ import {
   signOut,
   getCurrentUserData
 } from '../lib/authService.cjs';
+import { SearchBar } from './Feed/SearchBar';
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedSection, setSelectedSection] = useState("home");
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [authStep, setAuthStep] = useState('initial'); // 'initial', 'phone-verify', 'email-signin', 'email-signup'
+
   
   // Auth states
   const [user, setUser] = useState(null);
@@ -33,6 +39,8 @@ const Navbar = () => {
   const [displayName, setDisplayName] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedAvatar, setSelectedAvatar] = useState(null);
+
 
 
   // Monitor auth state
@@ -111,6 +119,7 @@ const Navbar = () => {
       setError('');
       await verifyPhoneCode(verificationCode, displayName || null);
       toggleAuthModal();
+      navigate('/Feed');
     } catch (error) {
       setError(error.message);
     }
@@ -121,18 +130,39 @@ const Navbar = () => {
       setError('');
       await signInWithEmail(email, password);
       toggleAuthModal();
+      navigate('/Feed');
     } catch (error) {
       setError(error.message);
     }
   };
 
-  const handleEmailSignUp = async () => {
+  const handleEmailSignUp = async (avatar) => {
     try {
       setError('');
-      await signUpWithEmail(email, password, displayName);
-      toggleAuthModal();
+      setIsLoading(true);
+      
+      // Basic validation
+      if (!email || !password || !displayName) {
+        throw new Error('Please fill all fields');
+      }
+  
+      const finalAvatar = avatar || 
+        GOOGLE_AVATAR_OPTIONS[Math.floor(Math.random() * GOOGLE_AVATAR_OPTIONS.length)];
+      
+      await signUpWithEmail(email, password, displayName, finalAvatar);
+      
+      // Show success message
+      setError('');
+      setAuthStep('initial');
+      setShowAuthModal(false);
+      
+      // Optional: Show toast notification
+      alert('Sign up successful! Welcome to our community!');
+      
     } catch (error) {
-      setError(error.message);
+      setError(error.message || 'Sign up failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -141,6 +171,7 @@ const Navbar = () => {
       setError('');
       await signInWithGoogle();
       toggleAuthModal();
+      navigate('/Feed');
     } catch (error) {
       setError(error.message);
     }
@@ -321,7 +352,10 @@ const Navbar = () => {
                 onChange={(e) => setDisplayName(e.target.value)}
               />
             </div>
-            
+            <AvatarSelector 
+        onSelect={(avatar) => setSelectedAvatar(avatar)} 
+      />
+
             <div className="flex items-center border border-gray-400 rounded-lg h-14 px-2">
               <input
                 type="email"
@@ -375,7 +409,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="NAVBAR sticky flex justify-between shadow-md items-center px-2 md:px-10">
+    <div className="NAVBAR sticky flex justify-between shadow-md items-center px-2 mt-1.5 md:px-10">
       <div className="flex">
         {/* Hamburger Menu */}
         <button
@@ -386,6 +420,11 @@ const Navbar = () => {
         </button>
 
         <img src='/OQLogoNew.svg' className="w-[100px] md:w-[130px] py-[0.7rem]" alt="" />
+        <div className="hidden  py-[0.7rem] md:flex items-center ml-2">
+        <SearchBar />
+        </div>
+       
+
       </div>  
 
       {/* Desktop Menu */}
