@@ -167,10 +167,12 @@ const Trip = () => {
             </div>
           </div>
         </div>
+        </div>
       </main>
       
       <InfoButton />
     </div>
+    
   );
 };
 
