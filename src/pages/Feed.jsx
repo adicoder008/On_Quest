@@ -1,16 +1,168 @@
-
-import { Header } from "../components/Feed/Header";
 import { CreatePost } from "../components/Feed/CreatePost";
 import { Post } from "../components/Feed/Post";
-import { Button } from "../components/Feed/Button";
-import { Avatar } from "../components/Feed/Avatar";
 import { EventCard } from "../components/Feed/EventCard";
 import { TravelerCard } from "../components/Feed/TravelerCard";
+import { onAuthStateChanged } from 'firebase/auth';
+import Navbar from "../components/Navbar";
+import { useEffect, useState } from "react";
+import { auth } from '../lib/firebase.cjs';
+import { getCurrentUserData } from '../lib/authService.cjs';
+import { collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { db } from '../lib/firebase.cjs';
+import { getDoc, doc } from 'firebase/firestore';
+import { FaPlus } from 'react-icons/fa'; // Correct import
+import { useNavigate } from 'react-router-dom';
+import CreateQuest from "../components/quest/CreateQuest";
 
 const Feed = () => {
+  const [user, setUser] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [posts, setPosts] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [popularUsers, setPopularUsers] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+      
+      if (currentUser) {
+        try {
+          const userDetails = await getCurrentUserData();
+          setUserData(userDetails);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      } else {
+        setUserData(null);
+      }
+      
+      setLoading(false);
+    });
+    
+    return () => unsubscribe();
+  }, []);
+
+  // Fetch posts from Firebase
+  useEffect(() => {
+    const unsubscribePosts = onSnapshot(
+      query(collection(db, 'posts'), orderBy('createdAt', 'desc')),
+      async (snapshot) => {
+        const postsData = [];
+        
+        // Process each post sequentially
+        for (const doc of snapshot.docs) {
+          const data = doc.data();
+          let authorName = 'Anonymous';
+          let authorAvatar = '/default-avatar.png';
+          let authorTitle = '';
+          
+          try {
+            // Fetch author details from users collection
+            const userDoc = await getDoc(doc(db, 'users', data.userId));
+            if (userDoc.exists()) {
+              const userData = userDoc.data();
+              authorName = userData.displayName || authorName;
+              authorAvatar = userData.photoURL || authorAvatar;
+              authorTitle = userData.title || '';
+            }
+          } catch (error) {
+            console.error("Error fetching user data:", error);
+          }
+    
+          // Construct post object
+          postsData.push({
+            id: doc.id,
+            author: {
+              id: data.userId,
+              name: authorName,
+              avatar: authorAvatar,
+              title: data.postType === 'sponsored' ? 'Sponsored' : authorTitle
+            },
+            content: {
+              text: data.text,
+              images: data.photoUrl ? [data.photoUrl] : []
+            },
+            metadata: {
+              time: '',
+              location: data.location || '',
+              createdAt: data.createdAt
+            },
+            stats: {
+              likes: data.likeCount || 0,
+              comments: data.commentCount || 0,
+              likedBy: data.likedBy || []
+            },
+            postType: data.postType,
+            ...(data.eventDetails && { eventDetails: data.eventDetails }),
+            ...(data.questContext && { questContext: data.questContext })
+          });
+        }
+        
+        setPosts(postsData);
+      }
+    );
+  
+    // Fetch upcoming events
+    const unsubscribeEvents = onSnapshot(
+      query(collection(db, 'events'), orderBy('startTime', 'asc')),
+      (snapshot) => {
+        const eventsData = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          // Format date for display
+          formattedDate: {
+            day: new Date(doc.data().startTime).getDate(),
+            month: new Date(doc.data().startTime).toLocaleString('default', { month: 'short' })
+          }
+        }));
+        setEvents(eventsData.slice(0, 5)); // Only show 5 upcoming events
+      }
+    );
+  
+    // Fetch popular travelers
+    const unsubscribeUsers = onSnapshot(
+      query(collection(db, 'users'), orderBy('followers', 'desc')),
+      (snapshot) => {
+        const usersData = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          // Ensure default avatar if none exists
+          photoURL: doc.data().photoURL || '/default-avatar.png'
+        }));
+        setPopularUsers(usersData.slice(0, 4)); // Only show 4 popular users
+      }
+    );
+  
+    // Cleanup function
+    return () => {
+      unsubscribePosts();
+      unsubscribeEvents();
+      unsubscribeUsers();
+    };
+  }, []);
+
+  // Format post time
+  const formatTime = (timestamp) => {
+    if (!timestamp) return '';
+    const date = new Date(timestamp.seconds * 1000);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+    
+    if (diffInSeconds < 60) return 'Just now';
+    if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}m ago`;
+    if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}h ago`;
+    return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  };
+
+  if (loading) {
+    return <div className="min-h-screen bg-white">Loading...</div>;
+  }
+
   return (
     <div className="min-h-screen bg-white">
-      <Header />
+      <Navbar />
 
       <main className="box-border flex gap-4 max-w-[1800px] mx-auto px-[67px] py-5 max-md:flex-col max-md:p-5 max-sm:p-2.5">
         {/* Left Sidebar */}
@@ -24,16 +176,25 @@ const Feed = () => {
               />
             </div>
             <div className="p-5">
-              <Avatar
-                src="https://cdn.builder.io/api/v1/image/assets/TEMP/d5ebb10c84e619d4fccb5e26b80cad49e9a674c5"
-                alt="Profile"
-                size="lg"
-                className="-mt-10 mb-2.5"
-              />
-              <h2 className="text-xl mb-1">Osama Bin Laden</h2>
-              <p className="text-sm text-[#8B8A8F]">
-                Travel Photographer & Backpacker
-              </p>
+              {user ? (
+                <>
+                  <img
+                    src={user.photoURL || '/default-avatar.png'}
+                    alt="Profile"
+                    className="-mt-10 mb-2.5 w-16 h-16 rounded-full object-cover border-2 border-white"
+                  />
+                  <h2 className="text-xl mb-1">{user.displayName || 'User'}</h2>
+                  <p className="text-sm text-[#8B8A8F]">
+                    {userData?.title || 'Travel Enthusiast'}
+                  </p>
+                </>
+              ) : (
+                <>
+                  <div className="-mt-10 mb-2.5 w-16 h-16 bg-gray-300 rounded-full"></div>
+                  <h2 className="text-xl mb-1">Guest</h2>
+                  <p className="text-sm text-[#8B8A8F]">Sign in to post</p>
+                </>
+              )}
             </div>
           </div>
 
@@ -76,73 +237,33 @@ const Feed = () => {
 
         {/* Main Feed */}
         <section className="w-[680px] max-md:w-full">
-          <CreatePost />
+          {user && <CreatePost onPostCreated={() => {}} />}
+            
+          {posts.map((post) => (
+            <Post
+              key={post.id}
+              id={post.id}
+              author={post.author}
+              content={post.content}
+              metadata={{
+                ...post.metadata,
+                time: formatTime(post.metadata.createdAt)
+              }}
+              stats={post.stats}
+              postType={post.postType}
+              eventDetails={post.eventDetails}
+              questContext={post.questContext}
+            />
+          ))}
 
-          <Post
-            author={{
-              name: "Osama Bin Laden",
-              avatar:
-                "https://cdn.builder.io/api/v1/image/assets/TEMP/06c49fe398544a1ee16a036f7c1240719c509941",
-              title: "Travel Photographer",
-            }}
-            content={{
-              text: "Just experienced the most amazing sunrise at Mount Batur! The trek was challenging but totally worth it. Here are some shots from this morning. 🌄",
-              images: ["image1", "image2"],
-            }}
-            metadata={{
-              time: "2 hours ago",
-              location: "Abottabad, Pakistan",
-            }}
-            stats={{
-              likes: 2500,
-              comments: 184,
-            }}
-          />
-
-          <Post
-            author={{
-              name: "Cannabis Shop Inc.",
-              avatar:
-                "https://cdn.builder.io/api/v1/image/assets/TEMP/06c49fe398544a1ee16a036f7c1240719c509941",
-              title: "Sponsored",
-            }}
-            content={{
-              text: "Special Winter Package: Northern Lights Adventure in Iceland! Book before Jan 2025 and get 20% off. Limited spots available.",
-              images: ["image1"],
-            }}
-            metadata={{
-              time: "Sponsored",
-              location: "",
-            }}
-            stats={{
-              likes: 2500,
-              comments: 184,
-            }}
-          />
-
-          <div className="text-right mt-2 mb-4">
-            <Button variant="outline" size="sm">Learn more</Button>
-          </div>
-
-          <Post
-            author={{
-              name: "Cannabis Shop Inc.",
-              avatar:
-                "https://cdn.builder.io/api/v1/image/assets/TEMP/06c49fe398544a1ee16a036f7c1240719c509941",
-            }}
-            content={{
-              text: "Get ready for the ultimate beachside music experience! The Goa Sunset Music Festival brings top international and Indian DJs to Goa's most stunning shores. Dance to the beats of EDM, house, and techno as the sun sets over Vagator Beach.",
-              images: ["image1"],
-            }}
-            metadata={{
-              time: "12 hours ago",
-              location: "Jahannum, Pakistan",
-            }}
-            stats={{
-              likes: 2500,
-              comments: 184,
-            }}
-          />
+          {posts.length === 0 && (
+            <div className="border bg-[#F8F9FA] p-6 rounded-lg border-[#C5C4C7] text-center">
+              <h3 className="text-lg font-medium mb-2">No posts yet</h3>
+              <p className="text-[#8B8A8F]">
+                {user ? "Be the first to share your travel experience!" : "Sign in to see posts"}
+              </p>
+            </div>
+          )}
         </section>
 
         {/* Right Sidebar */}
@@ -150,74 +271,60 @@ const Feed = () => {
           <div className="border bg-[#F8F9FA] p-4 rounded-lg border-[#C5C4C7]">
             <h2 className="text-base font-medium mb-4">Upcoming Events</h2>
             <div className="flex flex-col gap-3">
-              <EventCard
-                date={{ day: "15", month: "Jan" }}
-                title="Neon Drift Performance"
-                location="Gangtok, Sikkim, India"
-                type="music"
-              />
-              <EventCard
-                date={{ day: "20", month: "Jan" }}
-                title="Travel Photography Workshop"
-                location="Cochi, Kerala, India"
-                type="workshop"
-              />
-              <EventCard
-                date={{ day: "22", month: "Jan" }}
-                title="Bike Riders Meetup"
-                location="Delhi, India"
-                type="meetup"
-              />
-              <EventCard
-                date={{ day: "25", month: "Jan" }}
-                title="Cultural Festival"
-                location="Mumbai, India"
-                type="festival"
-              />
-              <EventCard
-                date={{ day: "28", month: "Jan" }}
-                title="Beach Cleanup Drive"
-                location="Goa, India"
-                type="other"
-              />
-              <Button variant="outline" className="w-full mt-3">
+              {events.map((event) => (
+                <EventCard
+                  key={event.id}
+                  date={{
+                    day: new Date(event.startTime).getDate().toString(),
+                    month: new Date(event.startTime).toLocaleString('default', { month: 'short' })
+                  }}
+                  title={event.title}
+                  location={event.location}
+                  type={event.type || 'other'}
+                />
+              ))}
+              {events.length === 0 && (
+                <p className="text-sm text-[#8B8A8F]">No upcoming events</p>
+              )}
+              <button className="text-blue-500 text-sm font-medium mt-2">
                 Explore more
-              </Button>
+              </button>
             </div>
           </div>
 
           <div className="border bg-[#F8F9FA] mt-4 p-4 rounded-lg border-[#C5C4C7]">
-            <h2 className="text-base font-medium mb-4">Trending Travelers</h2>
+            <h2 className="text-base font-medium mb-4">Popular Travelers</h2>
             <div className="flex flex-col gap-3">
-              <TravelerCard
-                name="Osama Bin Laden"
-                title="Adventurer, Photographer"
-                avatar="https://cdn.builder.io/api/v1/image/assets/TEMP/06c49fe398544a1ee16a036f7c1240719c509941"
-              />
-              <TravelerCard
-                name="Osama Bin Laden"
-                title="Adventurer, Photographer"
-                avatar="https://cdn.builder.io/api/v1/image/assets/TEMP/06c49fe398544a1ee16a036f7c1240719c509941"
-              />
-              <TravelerCard
-                name="Osama Bin Laden"
-                title="Food & Travel blogger"
-                avatar="https://cdn.builder.io/api/v1/image/assets/TEMP/06c49fe398544a1ee16a036f7c1240719c509941"
-              />
-              <TravelerCard
-                name="Osama Bin Laden"
-                title="Bagpacker"
-                avatar="https://cdn.builder.io/api/v1/image/assets/TEMP/06c49fe398544a1ee16a036f7c1240719c509941"
-              />
-              <Button variant="outline" className="w-full mt-3">
+              {popularUsers.map((user) => (
+                <TravelerCard
+                  key={user.id}
+                  name={user.displayName}
+                  title={user.title || 'Travel Enthusiast'}
+                  avatar={user.photoURL || '/default-avatar.png'}
+                />
+              ))}
+              {popularUsers.length === 0 && (
+                <p className="text-sm text-[#8B8A8F]">No popular travelers yet</p>
+              )}
+              <button className="text-blue-500 text-sm font-medium mt-2">
                 Explore more
-              </Button>
+              </button>
             </div>
           </div>
         </aside>
+        {user && (
+        <div className="fixed bottom-6 right-6 z-50">
+          <button
+            onClick={() => navigate('/create-quest')}
+            className="flex items-center justify-center w-14 h-14 bg-blue-500 text-white rounded-full shadow-lg hover:bg-blue-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            aria-label="Create new quest"
+          >
+            <FaPlus className="text-xl" />
+          </button>
+        </div>
+      )}
       </main>
     </div>
   );
 };
-
 export default Feed;

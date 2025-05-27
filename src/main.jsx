@@ -11,6 +11,8 @@ import Groups from './pages/Groups.jsx'
 import Events1 from './components/Events/Events1.jsx'
 import Events2 from './components/Events/Events2.jsx'
 
+import Quest from './pages/Quest.jsx'
+import CreateQuest from './components/quest/CreateQuest.jsx'
 
 const router = createBrowserRouter([
   {
@@ -47,6 +49,18 @@ const router = createBrowserRouter([
     element: <Groups />,
     errorElement: <div>Not found</div>,
   },
+  {
+    path: '/quest/:questId',
+    element: <Quest />,
+    errorElement: <div>Not found</div>,
+  },
+  {
+  path: '/create-quest',
+  element: <CreateQuest />,
+  errorElement: <div>Not found</div>,
+},
+  
+
 
   // {
   //   path: '/',
