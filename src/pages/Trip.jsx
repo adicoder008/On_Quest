@@ -15,13 +15,28 @@ const Trip = () => {
         <div className="container mx-auto">
           <TripHeader />
         </div>
+        
 
-        <div className="w-full mt-11 max-md:mt-10">
-          <div className="container mx-auto">
-            <div className="gap-5 flex max-md:flex-col max-md:items-stretch">
+        <div className="w-full max-md:mt-10">
+          <div className="container mx-auto ">
+            
+            <div className="gap-5 flex max-md:flex-col max-md:items-stretch ">
+            {/* <div className=" flex flex-col ">
+              <div></div> */}
               <div className="w-3/5 max-md:w-full max-md:ml-0">
                 <div className="flex w-full flex-col  items-stretch max-md:max-w-full">
-                  <div className="">
+                  <div className=" flex flex-col gap-10">
+                    <div>
+                      <p className="gap-2 text-base text-black mt-4 max-md:max-w-full">
+          Here's a well-planned{" "}
+          <span className="font-medium">Delhi to Goa solo trip</span> itinerary{" "}
+          <span className="font-medium">(March 15–18)</span> under a budget of{" "}
+          <span className="font-medium">
+            ₹2500 per night (excluding flight costs)
+          </span>
+          .
+        </p>
+        </div>
                   <FlightDetails />
                   </div>
                   
@@ -48,7 +63,7 @@ const Trip = () => {
                   </div>
                 </div>
               </div>
-
+              
               <div className="w-2/5 max-md:w-full">
                 <TripSidebar />
               </div>

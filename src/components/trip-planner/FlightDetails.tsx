@@ -15,7 +15,7 @@ export const FlightDetails = () => {
           </p>
         </div>
 
-        <div className="overflow-x-auto flex gap-3 p-3 mt-3 ">
+        <div className="overflow-x-auto flex gap-3 py-3 mt-3 ">
           <FlightCard
             airline="Indigo"
             flightNumber="6E 2603"

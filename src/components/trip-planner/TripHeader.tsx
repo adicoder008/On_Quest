@@ -7,7 +7,7 @@ export const TripHeader = () => {
         <h1 className="text-black text-[40px] max-md:max-w-full">
           <span className="font-bold text-[#F86F0A]">Goa</span> trip
         </h1>
-        <p className="gap-2 text-base text-black mt-4 max-md:max-w-full">
+        {/* <p className="gap-2 text-base text-black mt-4 max-md:max-w-full">
           Here's a well-planned{" "}
           <span className="font-medium">Delhi to Goa solo trip</span> itinerary{" "}
           <span className="font-medium">(March 15–18)</span> under a budget of{" "}
@@ -15,11 +15,11 @@ export const TripHeader = () => {
             ₹2500 per night (excluding flight costs)
           </span>
           .
-        </p>
+        </p> */}
       </div>
       <img
         src="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/b60768a4b0e42b2ce08a8622f08bb09efc534991cc751ca26e2f75c6c752ef31?placeholderIfAbsent=true"
-        className="aspect-[1] object-contain w-6 self-stretch shrink-0 my-auto"
+        className="aspect-[1] object-contain w-6 self-stretch shrink-0 my-auto -translate-x-10"
         alt="Share"
       />
     </div>

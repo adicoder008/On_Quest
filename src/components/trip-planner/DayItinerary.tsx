@@ -29,10 +29,19 @@ export const DayItinerary: React.FC<DayItineraryProps> = ({
   const [openSection, setOpenSection] = useState<string>("morning");
 
   const [activeRoutineId, setActiveRoutineId] = useState<string | null>(null);
+  const [activePlaceId, setActivePlaceId] = useState<string | null>(null);
 
 const handleRoutineClick = (id: string) => {
   setActiveRoutineId((prev) => (prev === id ? null : id)); // Toggle active state
+  setActivePlaceId(null); // Reset active place when routine is clicked
 };
+
+// Handle place click
+const handlePlaceClick = (id: string) => {
+  setActivePlaceId((prev) => (prev === id ? null : id)); // Toggle active state
+  setActiveRoutineId(null); // Reset active routine when place is clicked
+};
+
 
   // Routines state
   const [routines, setRoutines] = useState<RoutineItem[]>([
@@ -161,8 +170,8 @@ const handleRoutineClick = (id: string) => {
                 onMoveUp={() => handleMoveUpPlace(index)}
                 onMoveDown={() => handleMoveDownPlace(index)}
                 onDelete={() => handleDeletePlace(place.id)}
-                isActive={activeRoutineId === place.id}
-                whenClicked={handleRoutineClick}                
+                isActive={activePlaceId === place.id}
+                whenClicked={handlePlaceClick}                
               />
             ))}
           </div>

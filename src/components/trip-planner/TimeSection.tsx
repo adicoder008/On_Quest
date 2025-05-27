@@ -12,8 +12,8 @@ interface TimeSectionProps {
   icon: string;
   toggleIcon: string;
   children: React.ReactNode;
-  isOpen?: boolean;
-  onToggle?: () => void;
+  isOpen?: boolean; //optional
+  onToggle?: () => void; //optional     ? means optional
 }
 
 export const TimeSection: React.FC<TimeSectionProps> = ({
