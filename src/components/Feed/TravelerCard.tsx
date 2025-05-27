@@ -1,32 +1,26 @@
-import React from "react";
-import UserAvatar from "./UserAvatar";
-import FollowButton from "./FollowButton";
+
+import { Avatar } from "./Avatar";
+import { Button } from "./Button";
 
 interface TravelerCardProps {
   name: string;
-  description: string;
-  avatarSrc: string;
+  title: string;
+  avatar: string;
 }
 
-const TravelerCard: React.FC<TravelerCardProps> = ({
-  name,
-  description,
-  avatarSrc,
-}) => {
+export const TravelerCard = ({ name, title, avatar }: TravelerCardProps) => {
   return (
-    <div className="flex w-full items-center  justify-between">
-      <div className="self-stretch flex items-center gap-2 my-auto">
-        <UserAvatar src={avatarSrc} size="sm" />
-        <div className="self-stretch flex flex-col items-stretch justify-center my-auto">
-          <div className="text-[#333] text-sm font-medium">{name}</div>
-          <div className="text-[#8B8A8F] text-xs font-normal">
-            {description}
-          </div>
+    <div className="flex items-center justify-between">
+      <div className="flex items-center gap-3">
+        <Avatar src={avatar} alt={name} size="sm" />
+        <div>
+          <h3 className="text-sm font-medium">{name}</h3>
+          <p className="text-xs text-[#8B8A8F]">{title}</p>
         </div>
       </div>
-      <FollowButton variant="primary" size="sm" />
+      <Button variant="outline" size="sm">
+        Follow
+      </Button>
     </div>
   );
 };
-
-export default TravelerCard;

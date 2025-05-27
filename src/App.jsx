@@ -10,25 +10,24 @@ import Signup from "./components/Signup";
 import Trip from "./pages/Trip";
 import Feed from "./components/Feed/Index";
 import MyProfile from "./components/My-Profile/Index";
+import Feed from "./pages/Feed";
+
 
 
 
 const App = () => (
   
   <div>
-     {/* <Navbar/>
+    <Navbar/>
     <Hero/>
     <Mid/>
     <HowItWorks/>
     <PhoneSection/>
     <FAQ/>
     <Signup/>
-    <Footer/>  */}
-    <Feed />
-    <MyProfile />
-    
+    <Footer/> 
+  
   </div>
-    
 );
 
 export default App;

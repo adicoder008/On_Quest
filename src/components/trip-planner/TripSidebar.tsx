@@ -1,96 +1,86 @@
+import React from "react";
 
-import React, { useState, useEffect } from "react";
-import { MapView } from "./MapView";
-import { LocationList } from "./LocationList";
-import { HotelDetail } from "./HotelDetail";
-import { useItineraryPlaces, useNearbyHotels } from "../services/placesService";
-import { Place } from "../services/placesService";
-
-export const TripSidebar = () => {
-  const { places, loading } = useItineraryPlaces();
-  const [selectedPlaceId, setSelectedPlaceId] = useState<string | null>(null);
-  const [selectedPlace, setSelectedPlace] = useState<Place | null>(null);
-  const [view, setView] = useState<'map' | 'list'>('map');
-
-  // Find the selected place when the ID changes
-  useEffect(() => {
-    if (selectedPlaceId && places.length > 0) {
-      const place = places.find(p => p.id === selectedPlaceId) || null;
-      setSelectedPlace(place);
-    } else {
-      setSelectedPlace(null);
-    }
-  }, [selectedPlaceId, places]);
-
-  // Fetch nearby hotels when a place is selected
-  const { hotels, loading: hotelsLoading } = useNearbyHotels(
-    selectedPlace?.lat || 15.2993, 
-    selectedPlace?.lng || 74.1240
-  );
-
-  const handleSelectPlace = (placeId: string) => {
-    setSelectedPlaceId(placeId);
+export const TripSidebar = ({ tripData }) => {
+  // Calculate the total activities across all days
+  const getTotalActivities = () => {
+    if (!tripData?.days) return 0;
+    return tripData.days.reduce((total, day) => total + (day.activities?.length || 0), 0);
   };
 
+  // Get all unique locations from all activities
+  const getUniqueLocations = () => {
+    if (!tripData?.days) return [];
+    
+    const locations = new Set();
+    tripData.days.forEach(day => {
+      day.activities?.forEach(activity => {
+        if (activity.location) {
+          // Split locations if they contain "to"
+          if (activity.location.includes(" to ")) {
+            const [from, to] = activity.location.split(" to ");
+            locations.add(from.trim());
+            locations.add(to.trim());
+          } else {
+            locations.add(activity.location.trim());
+          }
+        }
+      });
+    });
+    
+    return Array.from(locations);
+  };
+
+  const uniqueLocations = getUniqueLocations();
+
   return (
-    <div className="bg-[rgba(248,249,250,1)] w-full h-screen sticky top-0 flex flex-col">
-      <div className="p-3 border-b flex justify-between items-center">
-        <h3 className="text-lg font-bold">Trip Map</h3>
-        <div className="flex space-x-1 rounded-lg bg-gray-200 p-1">
-          <button 
-            className={`px-3 py-1 text-sm rounded-md ${view === 'map' ? 'bg-white shadow-sm' : ''}`}
-            onClick={() => setView('map')}
-          >
-            Map
-          </button>
-          <button 
-            className={`px-3 py-1 text-sm rounded-md ${view === 'list' ? 'bg-white shadow-sm' : ''}`}
-            onClick={() => setView('list')}
-          >
-            List
-          </button>
+    <div className="flex flex-col p-5 rounded-xl border border-solid border-[#D3D3D3] shadow-sm h-fit">
+      <div className="text-black text-xl font-semibold">Trip Overview</div>
+      
+      <div className="flex flex-col mt-6 gap-4">
+        <div className="flex justify-between">
+          <div className="text-zinc-500">Days</div>
+          <div className="text-black font-medium">{tripData?.days?.length || 0}</div>
         </div>
-      </div>
-
-      {loading ? (
-        <div className="flex items-center justify-center h-full">
-          <p>Loading trip information...</p>
+        
+        <div className="flex justify-between">
+          <div className="text-zinc-500">Activities</div>
+          <div className="text-black font-medium">{getTotalActivities()}</div>
         </div>
-      ) : (
-        <>
-          {view === 'map' ? (
-            <div className="h-[40vh] md:h-[50vh]">
-              <MapView places={places} />
-            </div>
-          ) : (
-            <div className="h-[40vh] md:h-[50vh] overflow-y-auto">
-              <LocationList
-                places={places}
-                selectedPlace={selectedPlaceId}
-                onSelectPlace={handleSelectPlace}
-              />
-            </div>
-          )}
-
-          <div className="p-4 border-t bg-white flex-1 overflow-y-auto">
-            <h3 className="font-bold text-lg mb-3">
-              {selectedPlace 
-                ? `Hotels near ${selectedPlace.name}` 
-                : "Recommended Hotels"}
-            </h3>
-            
-            {hotelsLoading ? (
-              <p className="text-sm text-gray-500">Loading nearby hotels...</p>
+        
+        <div className="h-px bg-gray-200 my-2" />
+        
+        <div className="flex flex-col">
+          <div className="text-zinc-500 mb-2">Destinations</div>
+          <div className="flex flex-col gap-2">
+            {uniqueLocations.length > 0 ? (
+              uniqueLocations.slice(0, 5).map((location: string, index: number) => (
+                <div key={index} className="text-black font-medium">{location}</div>
+              ))
             ) : (
-              <div className="space-y-3">
-                {hotels.map(hotel => (
-                  <HotelDetail key={hotel.id} hotel={hotel} />
-                ))}
-              </div>
+              <div className="text-black font-medium">No destinations specified</div>
+            )}
+            
+            {uniqueLocations.length > 5 && (
+              <div className="text-zinc-500">+{uniqueLocations.length - 5} more</div>
             )}
           </div>
-        </>
-      )}
+        </div>
+        
+        <div className="h-px bg-gray-200 my-2" />
+        
+        <div className="flex flex-col">
+          <div className="text-zinc-500 mb-2">Weather</div>
+          <div className="flex items-center gap-2">
+            <div className="text-2xl">☀️</div>
+            <div className="text-black font-medium">28°C / 82°F</div>
+          </div>
+          <div className="text-zinc-500 text-sm mt-1">Average for {tripData?.days?.[0]?.date ? new Date(tripData.days[0].date).toLocaleDateString('en-US', { month: 'long' }) : 'this period'}</div>
+        </div>
+      </div>
+      
+      <button className="mt-8 bg-white border-2 border-solid border-[#EA6100] text-[#EA6100] rounded-lg py-2.5 font-medium hover:bg-orange-50 transition-colors">
+        Download Itinerary PDF
+      </button>
     </div>
   );
 };

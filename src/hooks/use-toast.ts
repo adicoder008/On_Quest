@@ -1,5 +1,4 @@
 import * as React from "react"
-
 import type {
   ToastActionElement,
   ToastProps,
@@ -167,6 +166,19 @@ function toast({ ...props }: Toast) {
     update,
   }
 }
+
+// Helper functions for common toast types
+toast.success = (description: string, options = {}) => 
+  toast({ title: "Success", description, variant: "success", ...options });
+
+toast.error = (description: string, options = {}) => 
+  toast({ title: "Error", description, variant: "destructive", ...options });
+
+toast.warning = (description: string, options = {}) => 
+  toast({ title: "Warning", description, variant: "warning", ...options });
+
+toast.info = (description: string, options = {}) => 
+  toast({ title: "Info", description, variant: "default", ...options });
 
 function useToast() {
   const [state, setState] = React.useState<State>(memoryState)

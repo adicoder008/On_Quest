@@ -7,7 +7,7 @@ interface HotelCardProps {
   rating: string;
   ratingCount: string;
   image: string;
-  overlay: string;
+  overlay?: string;
 }
 
 export const HotelCard: React.FC<HotelCardProps> = ({
@@ -30,11 +30,13 @@ export const HotelCard: React.FC<HotelCardProps> = ({
                 className="absolute h-full w-full object-cover inset-0"
                 alt={name}
               />
-              <img
-                src={overlay}
-                className="aspect-[1.81] object-contain w-full"
-                alt=""
-              />
+              {overlay && (
+                <img
+                  src={overlay}
+                  className="aspect-[1.81] object-contain w-full"
+                  alt=""
+                />
+              )}
             </div>
           </div>
           <div className="flex w-full gap-[40px_42px] justify-between mt-2">

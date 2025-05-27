@@ -1,30 +1,44 @@
-import React from "react";
 
 interface EventCardProps {
-  day: string;
-  month: string;
-  title: string;
-  location: string;
-}
-
-const EventCard: React.FC<EventCardProps> = ({
-  day,
-  month,
-  title,
-  location,
-}) => {
-  return (
-    <div className="flex w-full items-center gap-2">
-      <div className="rounded bg-[rgba(64,43,9,0.1)] self-stretch flex flex-col items-center text-black whitespace-nowrap justify-center w-[49px] h-[49px] my-auto px-3">
-        <div className="text-base font-medium">{day}</div>
-        <div className="text-sm font-normal">{month}</div>
+    date: {
+      day: string;
+      month: string;
+    };
+    title: string;
+    location: string;
+    type?: "music" | "workshop" | "meetup" | "festival" | "other";
+  }
+  
+  export const EventCard = ({ date, title, location, type = "other" }: EventCardProps) => {
+    // Function to get the background color based on event type
+    const getTypeColor = () => {
+      switch (type) {
+        case "music":
+          return "bg-blue-500";
+        case "workshop":
+          return "bg-green-500";
+        case "meetup":
+          return "bg-purple-500";
+        case "festival":
+          return "bg-yellow-500";
+        default:
+          return "bg-[#EA6100]";
+      }
+    };
+  
+    return (
+      <div className="flex items-center gap-3">
+        <div className={`flex flex-col items-center justify-center min-w-[48px] h-12 ${getTypeColor()} rounded-lg text-white`}>
+          <span className="text-sm font-medium">{date.month}</span>
+          <span className="text-base font-bold">{date.day}</span>
+        </div>
+        <div className="flex-1">
+          <h3 className="text-sm font-medium">{title}</h3>
+          <div className="flex justify-between items-center">
+            <p className="text-xs text-[#8B8A8F]">{location}</p>
+          </div>
+        </div>
       </div>
-      <div className="self-stretch font-normal my-auto">
-        <div className="text-black text-sm">{title}</div>
-        <div className="text-[#8B8A8F] text-xs">{location}</div>
-      </div>
-    </div>
-  );
-};
-
-export default EventCard;
+    );
+  };
+  
