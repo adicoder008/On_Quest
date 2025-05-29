@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+// import { LocationIcon } from "@/components/icons/LocationIcon";
 import { 
   Collapsible, 
   CollapsibleContent, 
@@ -43,7 +44,7 @@ export const TimeSection: React.FC<TimeSectionProps> = ({
             <div className="text-black text-xl font-bold self-stretch my-auto">
               {title}
             </div>
-            import { LocationIcon } from "@/components/icons/LocationIcon"; 
+            {/* import { LocationIcon } from "@/components/icons/LocationIcon";  */}
           </div>
           {isOpen ? (
             <ChevronUp className="h-6 w-6 text-[#F86F0A]" />

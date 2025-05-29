@@ -1,7 +1,37 @@
 import React, { useState } from "react";
-import { TimeSection } from "./TimeSection";
+// import { TimeSection } from "./TimeSection";
 import { HotelCard } from "./HotelCard";
 import { PlaceCard } from "./PlaceCard";
+import { ChevronDownIcon, ChevronUpIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { ClockIcon, CurrencyDollarIcon, MapPinIcon } from '@heroicons/react/24/outline';
+// import { Routines } from "./Routines";
+
+
+export interface ActivityItem {
+  id?: string;
+  title: string;
+  description?: string;
+  time?: string;
+  location?: string;
+  cost?: string;
+  imageUrl?: string;
+  hotels?: {
+    name: string;
+    location: string;
+    price: string;
+    rating: string;
+    ratingCount: string;
+    image: string;
+    overlay: string;
+  }[];
+}
+
+// Add this interface
+interface RoutineItem {
+  id: string;
+  CheckIn: string;
+  image: string;
+}
 
 interface DayItineraryProps {
     days: {
@@ -20,10 +50,13 @@ interface DayItineraryProps {
   onAdd: (text: string) => void;
 }
 
+
 const TimeSection: React.FC<{
   title: string;
   icon?: React.ReactNode;
   isOpen: boolean;
+  toggleIcon?: string | React.ReactNode; 
+
   onToggle: () => void;
   children: React.ReactNode;
 }> = ({ title, icon, isOpen, onToggle, children }) => (
@@ -96,13 +129,13 @@ const TextCard: React.FC<{
         )}
         {activity.location && (
           <div className="flex items-center text-sm text-gray-500">
-            <LocationIcon className="w-4 h-4 mr-1" />
+            <MapPinIcon className="w-4 h-4 mr-1" />
             {activity.location}
           </div>
         )}
         {activity.cost && (
           <div className="flex items-center text-sm text-gray-500">
-            <MoneyIcon className="w-4 h-4 mr-1" />
+            <CurrencyDollarIcon className="w-4 h-4 mr-1" />
             {activity.cost}
           </div>
         )}
@@ -142,7 +175,7 @@ const ImageCard: React.FC<{
           )}
           {activity.location && (
             <div className="flex items-center text-sm text-gray-500">
-              <LocationIcon className="w-4 h-4 mr-1" />
+              <MapPinIcon className="w-4 h-4 mr-1" />
               {activity.location}
             </div>
           )}
@@ -188,7 +221,7 @@ const HotelsCard: React.FC<{
     <CardControls onMoveUp={onMoveUp} onMoveDown={onMoveDown} onDelete={onDelete} />
   </div>
 );
-
+//this is the main component for the Day Itinerary
 export const DayItinerary: React.FC<DayItineraryProps> = ({
   dayNumber,
   date,
@@ -199,18 +232,38 @@ export const DayItinerary: React.FC<DayItineraryProps> = ({
   onDelete,
   onAdd,
 }) => {
+  // Add these state declarations at the top of your component
+
+
+const [activeItemId, setActiveItemId] = useState<string | null>(null);
+
+// Add these state declarations
+const [routines, setRoutines] = useState<Array<{id: string, CheckIn: string, image: string}>>([]);
+const [places, setPlaces] = useState<Array<{id: string, title: string, description: string, imageUrl: string}>>([]);
+
+
+
+  const SECTION_KEYS = ["morning", "afternoon", "evening", "night", "other"] as const;
+
+type SectionKey = typeof SECTION_KEYS[number];
+
+const [openSections, setOpenSections] = useState<Record<SectionKey, boolean>>(
+  () => Object.fromEntries(SECTION_KEYS.map((key) => [key, true])) as Record<SectionKey, boolean>
+);
   const [openSection, setOpenSection] = useState<string>("morning");
 
-  const handleToggle = (section: string) => {
-    setOpenSections(prev => ({
-      ...prev,
-      [section]: !prev[section]
-    }));
-  };
+  // Replace your current handleToggle with this
+const handleToggle = (section: string) => {
+  setOpenSections(prev => ({
+    ...prev,
+    [section]: !prev[section]
+  }));
+};
 
-  const handleItemClick = (id: string) => {
-    setActiveItemId(activeItemId === id ? null : id);
-  };
+  // Update to match your state
+const handleItemClick = (id: string) => {
+  setActiveItemId(activeItemId === id ? null : id);
+};
 
   // Group activities by time (if time exists) or use a default group
   const groupedActivities = activities.reduce((acc, activity) => {
@@ -335,6 +388,12 @@ export const DayItinerary: React.FC<DayItineraryProps> = ({
             </div>
 
             <PlaceCard
+              id="arambol-beach"
+              isActive={false}
+              onMoveUp={() => console.log("Move up Arambol Beach")}
+              onMoveDown={() => console.log("Move down Arambol Beach")}
+              onDelete={() => console.log("Delete Arambol Beach")}
+              whenClicked={(id) => console.log(`PlaceCard clicked: ${id}`)}
               image="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/3040fb0f958bb432aa81dc2446917c4a03146d3a7f41bdb05993403f1411c581?placeholderIfAbsent=true"
               title="Arambol Beach"
               description="Discover the magic of Arambol Beach – where golden sands, chill vibes, and epic sunsets await!"
@@ -350,15 +409,27 @@ export const DayItinerary: React.FC<DayItineraryProps> = ({
           onToggle={() => handleToggle("afternoon")}
         >
           <div className="flex flex-col gap-3">
-            <PlaceCard
+          <PlaceCard
+              id="arambol-beach"
+              isActive={false}
+              onMoveUp={() => console.log("Move up Arambol Beach")}
+              onMoveDown={() => console.log("Move down Arambol Beach")}
+              onDelete={() => console.log("Delete Arambol Beach")}
+              whenClicked={(id) => console.log(`PlaceCard clicked: ${id}`)}
               image="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/3040fb0f958bb432aa81dc2446917c4a03146d3a7f41bdb05993403f1411c581?placeholderIfAbsent=true"
-              title="Calangute Beach"
-              description="Experience the vibrant atmosphere of Calangute Beach – Goa's most popular shoreline!"
+              title="Arambol Beach"
+              description="Discover the magic of Arambol Beach – where golden sands, chill vibes, and epic sunsets await!"
             />
             <PlaceCard
+              id="arambol-beach"
+              isActive={false}
+              onMoveUp={() => console.log("Move up Arambol Beach")}
+              onMoveDown={() => console.log("Move down Arambol Beach")}
+              onDelete={() => console.log("Delete Arambol Beach")}
+              whenClicked={(id) => console.log(`PlaceCard clicked: ${id}`)}
               image="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/3040fb0f958bb432aa81dc2446917c4a03146d3a7f41bdb05993403f1411c581?placeholderIfAbsent=true"
-              title="Baga Beach"
-              description="Enjoy water sports and beachside activities at the energetic Baga Beach"
+              title="Arambol Beach"
+              description="Discover the magic of Arambol Beach – where golden sands, chill vibes, and epic sunsets await!"
             />
           </div>
         </TimeSection>
@@ -371,10 +442,16 @@ export const DayItinerary: React.FC<DayItineraryProps> = ({
           onToggle={() => handleToggle("night")}
         >
           <div className="flex flex-col gap-3">
-            <PlaceCard
+          <PlaceCard
+              id="arambol-beach"
+              isActive={false}
+              onMoveUp={() => console.log("Move up Arambol Beach")}
+              onMoveDown={() => console.log("Move down Arambol Beach")}
+              onDelete={() => console.log("Delete Arambol Beach")}
+              whenClicked={(id) => console.log(`PlaceCard clicked: ${id}`)}
               image="https://cdn.builder.io/api/v1/image/assets/3b64de0bd39c48b8b53f7c91e5d4e417/3040fb0f958bb432aa81dc2446917c4a03146d3a7f41bdb05993403f1411c581?placeholderIfAbsent=true"
-              title="Tito's Lane"
-              description="Experience Goa's legendary nightlife at Tito's Lane – the heart of party central!"
+              title="Arambol Beach"
+              description="Discover the magic of Arambol Beach – where golden sands, chill vibes, and epic sunsets await!"
             />
             <div className="bg-white shadow-[2px_4px_4px_rgba(0,0,0,0.25)] flex w-full flex-col items-stretch justify-center px-6 py-4 rounded-lg border-l-8 border-white">
               <div className="text-base text-black font-medium py-2">

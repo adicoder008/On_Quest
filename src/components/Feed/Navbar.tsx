@@ -76,7 +76,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Search, Home, Users, Bell, Calendar, Target } from "lucide-react";
-import { Avatar, AvatarImage } from "./avatar";
+import { Avatar } from "./Avatar";
 
 const Navbar: React.FC = () => {
   return (
@@ -133,11 +133,11 @@ const Navbar: React.FC = () => {
         
         <div className="border-l border-gray-300 h-8 mx-2"></div>
         
-        <Link to="/profile">
+        {/* <Link to="/profile">
           <Avatar className="h-9 w-9">
             <AvatarImage src="https://github.com/shadcn.png" alt="User profile" />
           </Avatar>
-        </Link>
+        </Link> */}
       </div>
     </nav>
   );

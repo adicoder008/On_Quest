@@ -1,5 +1,5 @@
 import React from "react";
-import EventCard from "./EventCard";
+import {EventCard} from "./EventCard";
 
 const UpcomingEvents: React.FC = () => {
   const events = [
@@ -44,8 +44,8 @@ const UpcomingEvents: React.FC = () => {
         {events.map((event, index) => (
           <div key={index} className={index > 0 ? "mt-3" : ""}>
             <EventCard
-              day={event.day}
-              month={event.month}
+              date={{ day: event.day, month: event.month }}
+              // month={event.month}
               title={event.title}
               location={event.location}
             />

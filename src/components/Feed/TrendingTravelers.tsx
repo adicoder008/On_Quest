@@ -1,5 +1,5 @@
 import React from "react";
-import TravelerCard from "./TravelerCard";
+import {TravelerCard} from "./TravelerCard";
 
 const TrendingTravelers: React.FC = () => {
   const travelers = [
@@ -31,8 +31,8 @@ const TrendingTravelers: React.FC = () => {
           <div key={index} className={index > 0 ? "mt-3" : ""}>
             <TravelerCard
               name={traveler.name}
-              description={traveler.description}
-              avatarSrc={traveler.avatarSrc}
+              title={traveler.description}
+              avatar={traveler.avatarSrc}
             />
           </div>
         ))}

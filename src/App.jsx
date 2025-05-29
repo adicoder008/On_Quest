@@ -7,10 +7,11 @@ import Mid from "./components/Mid";
 import Navbar from "./components/Navbar";
 import PhoneSection from "./components/PhoneSection";
 import Signup from "./components/Signup";
-import Trip from "./pages/Trip";
-import Feed from "./components/Feed/Index";
+// import Trip from "./pages/Trip";
+// import Feed from "./components/Feed/Index";
 import MyProfile from "./components/My-Profile/Index";
-import Feed from "./pages/Feed";
+// import Feed from "./pages/Feed";
+import Quest from "./pages/Quest";
 
 
 
@@ -26,6 +27,9 @@ const App = () => (
     <FAQ/>
     <Signup/>
     <Footer/> 
+    <Quest/>
+    {/* <Feed/>
+    <MyProfile/> */}
   
   </div>
 );
