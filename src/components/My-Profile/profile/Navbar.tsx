@@ -3,12 +3,12 @@ import { NavigationMenu, NavigationMenuList, NavigationMenuItem } from "../ui/na
 
 const Navbar: React.FC = () => {
   return (
-    <div className="bg-white shadow-sm flex w-full items-center justify-between px-4 py-1.5 border-b border-gray-200">
+    <div className="bg-white shadow-sm hover:shadow-xl h-[76px] flex w-full items-center justify-between px-16 py-1.5 border-b border-gray-200">
       <div className="flex items-center gap-4">
         <img
           src="https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/7ba09782b451dbfbc5be2cd9243cebe4ac815288?placeholderIfAbsent=true"
           alt="Logo"
-          className="h-8 object-contain"
+          className="h-[64px] object-contain"
         />
         <div className="flex items-center border border-[#8B8A8F] bg-white rounded-full px-3 py-1.5">
           <img
@@ -39,7 +39,11 @@ const Navbar: React.FC = () => {
           </NavigationMenuItem>
           
           <NavigationMenuItem className="flex flex-col items-center">
-            <div className="w-5 h-5"></div>
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/06d56ea533aecd9a2b8ddf71ea41700f8c6b6951?placeholderIfAbsent=true"
+              alt="Groups icon"
+              className="w-5 h-5"
+            />
             <span className="text-xs text-gray-600 mt-1">Groups</span>
           </NavigationMenuItem>
           
@@ -53,7 +57,11 @@ const Navbar: React.FC = () => {
           </NavigationMenuItem>
           
           <NavigationMenuItem className="flex flex-col items-center">
-            <div className="w-5 h-5"></div>
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/06d56ea533aecd9a2b8ddf71ea41700f8c6b6951?placeholderIfAbsent=true"
+              alt="Trip Planner icon"
+              className="w-5 h-5"
+            />
             <span className="text-xs text-gray-600 mt-1">Trip Planner</span>
           </NavigationMenuItem>
           
@@ -66,13 +74,13 @@ const Navbar: React.FC = () => {
             <span className="text-xs text-gray-600 mt-1">Events</span>
           </NavigationMenuItem>
           
-          <div className="border-l border-gray-300 h-10 mx-2"></div>
+          <div className="border-l border-gray-600 w-0.5 h-10 mx-2"></div>
           
           <NavigationMenuItem>
             <img
               src="https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/f2c04753faeb06e92f8c18ca0b4f344bb630c7e7?placeholderIfAbsent=true"
               alt="User avatar"
-              className="w-8 h-8 rounded-full"
+              className="w-12 h-12 rounded-full"
             />
           </NavigationMenuItem>
         </NavigationMenuList>

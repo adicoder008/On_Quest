@@ -39,30 +39,30 @@ const PostCard: React.FC<PostCardProps> = ({
         >
           <div className="self-stretch flex min-w-60 items-center gap-3 my-auto">
             <UserAvatar src={avatarSrc} alt={username} />
-            <div className="self-stretch flex flex-col items-stretch justify-center w-[209px] my-auto">
-              <div className="flex w-full max-w-[209px] items-stretch gap-2 justify-between">
-                <div
-                  className={`${headerTextColor} text-base font-medium my-auto`}
-                >
-                  {username}
-                </div>
-                {userType && (
-                  <div className="flex items-stretch gap-1 text-xs font-normal whitespace-nowrap h-full">
-                    <div
-                      className={`self-stretch ${userTypeBgColor} ${userTypeColor} gap-2.5 h-full px-2 py-0.5 rounded-[48px]`}
-                    >
-                      {userType}
-                    </div>
-                    <img
-                      src="https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/0ca32467b995d395e7e386446ed15b35165a05d6?placeholderIfAbsent=true"
-                      alt="Verified"
-                      className="aspect-[1] object-contain w-6 shrink-0 my-auto"
-                    />
+            <div className="self-stretch flex flex-col items-stretch justify-center  my-auto">
+            <div className="flex w-full items-center justify-between gap-2">
+            <div className={`${headerTextColor} text-base font-medium`}>
+              {username}
+            </div>
+
+              {userType && (
+                <div className="flex items-center gap-1 text-xs font-normal whitespace-nowrap">
+                  <div
+                    className={`px-2 py-0.5 rounded-full ${userTypeBgColor} ${userTypeColor}`}
+                  >
+                    {userType}
                   </div>
-                )}
+                  <img
+                    src="https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/0ca32467b995d395e7e386446ed15b35165a05d6?placeholderIfAbsent=true"
+                    alt="Verified"
+                    className="w-4 h-4 object-contain"
+                  />
+                </div>
+              )}
               </div>
+
               <div
-                className={`flex items-center gap-2 text-xs ${headerTextColor === "text-white" ? "text-[#F8F9FA]" : "text-[#543F1D]"} font-normal justify-center`}
+                className={`flex items-center gap-2 text-xs ${headerTextColor === "text-white" ? "text-[#F8F9FA]" : "text-[#543F1D]"} font-normal`}
               >
                 <div className="self-stretch my-auto">{timeAgo}</div>
                 <div className="self-stretch my-auto">{location}</div>

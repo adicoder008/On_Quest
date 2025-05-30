@@ -7,7 +7,7 @@ const LeagueInfoWidget: React.FC = () => {
         <div className="text-black text-sm font-normal">Travel League</div>
         <div className="flex w-full items-center gap-[35px] justify-between px-2">
           <div className="self-stretch flex flex-col items-stretch justify-center my-auto">
-            <div className="text-[rgba(234,97,0,1)] text-[32px] font-bold">
+            <div className="text-[rgba(234,97,0,1)] text-[32px] font-arsenal font-bold italic">
               Scout
             </div>
             <div className="text-[#8B8A8F] text-xs font-normal">
