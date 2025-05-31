@@ -8,14 +8,15 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ content, sidebar }) => {
   return (
-    <div className="self-center flex w-full max-w-[1375px] gap-4 mt-[30px] max-md:max-w-full">
-      <div className="flex min-w-60 flex-col items-stretch grow shrink w-[963px] max-md:max-w-full">
-        {content}
-      </div>
-      <div className="min-w-60 w-[266px] sticky top-4 self-start h-fit">
-        {sidebar}
-      </div>
-    </div>
+    <div className="flex flex-col md:flex-row w-full max-w-[1375px] gap-4 mt-[30px] mx-auto">
+  <div className="flex flex-col flex-grow min-w-0 md:w-[1029px] w-full">
+    {content}
+  </div>
+  <div className="w-full md:w-[322px] md:sticky top-4 self-start h-fit">
+    {sidebar}
+  </div>
+</div>
+
   );
 };
 

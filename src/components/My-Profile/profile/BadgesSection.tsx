@@ -26,7 +26,7 @@ const BadgesSection: React.FC = () => {
           <img
             src="https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/6d9015d66a4492d3b77ce66461bc10f538b436ae?placeholderIfAbsent=true"
             alt="Road Tripper badge"
-            className="aspect-[1] object-contain w-16 self-center"
+            className="aspect-[0.83] object-contain w-[100px] shrink-0"
           />
           <div>Road Tripper</div>
         </div>

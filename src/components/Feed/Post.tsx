@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Avatar } from "./Avatar";
+import { Avatar } from "./avatar";
 import { Button } from "./Button";
 import { db, auth } from '../../lib/firebase.cjs';
 import { 

@@ -26,7 +26,7 @@ const ProfileHeader: React.FC = () => {
         <img
           src="https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/5a2a7a7ce8131f512e49834519610d7a24d14fcf?placeholderIfAbsent=true"
           alt="Profile picture"
-          className="aspect-[1] object-contain w-24 rounded-[1080px]"
+          className="relative aspect-[1] object-contain w-24 rounded-[1080px]"
         />
         <div className="flex w-full flex-col items-stretch mt-2.5 max-md:max-w-full">
           <div className="flex w-full gap-[40px_100px] justify-between flex-wrap max-md:max-w-full">
