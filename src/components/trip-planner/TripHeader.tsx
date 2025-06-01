@@ -35,7 +35,7 @@ export const TripHeader = ({ tripData, onBack }) => {
         <h1 className="text-black text-[40px] max-md:max-w-full">
           <span className="font-bold text-[#F86F0A]">Goa</span> trip
         </h1>
-        <p className="gap-2 text-base text-black mt-4 max-md:max-w-full">
+        {/* <p className="gap-2 text-base text-black mt-4 max-md:max-w-full">
           Here's a well-planned{" "}
           <span className="font-medium">Delhi to Goa solo trip</span> itinerary{" "}
           <span className="font-medium">(March 15–18)</span> under a budget of{" "}
@@ -43,7 +43,7 @@ export const TripHeader = ({ tripData, onBack }) => {
             ₹2500 per night (excluding flight costs)
           </span>
           .
-        </p>
+        </p> */}
       </div>
     </div>
   );

@@ -43,20 +43,20 @@ interface RoutinesProps {
 
     return (
       <>
-        <div className=" w-full flex  " >
-          <div className={`shadow-[2px_4px_4px_rgba(0,0,0,0.1)] bg-white justify-between flex w-[88%] px-6 py-4 rounded-lg border-l-8 ${isActive ? "border-[rgba(250,132,31,1)]":"border-transparent"} `}  onClick={() => whenClicked(id)}>
+        {/* <div className=" w-full flex  " >
+          <div className={`shadow-[2px_4px_4px_rgba(0,0,0,0.1)] bg-white  justify-between flex w-[88%] px-6 py-4 rounded-lg border-l-8 ${isActive ? "border-[rgba(250,132,31,1)]":"border-transparent"} `}  onClick={() => whenClicked(id)}>
             <div className="RIGHT flex flex-col">
               <div className="text-base text-black font-medium py-2">
                 {CheckIn}
-              </div>
+              </div >
               <img src={image}
-                className=" h-[40vh] w-[27vw] object-cover inset-0" alt="" />
+                className="w-[23vw] rounded-xl py-4 pr-4" alt="" />
             </div>
           </div>
   
           {/* Show Controls only when this card is active */}
-          {isActive && (
-            <div className="SCROLL_BAR h-[330px] w-[35px] bg-[#FFFFFF] shadow-2xl rounded-lg flex flex-col p-3 justify-between items-center translate-x-3 ">
+          {/* {isActive && (
+            <div className="SCROLL_BAR h-[270px] w-[35px] bg-[#FFFFFF] shadow-2xl rounded-lg flex flex-col p-3 justify-between items-center translate-x-3 ">
               <div className="flex flex-col gap-3">
                 <button onClick={(e) => { e.stopPropagation(); onMoveUp(); }}><FaChevronUp /></button>
                 <button onClick={(e) => { e.stopPropagation(); onMoveDown(); }}><FaChevronDown /></button>
@@ -64,13 +64,46 @@ interface RoutinesProps {
               <button onClick={(e) => { e.stopPropagation(); onDelete(); }}><RiDeleteBin6Fill /></button>
             </div>
           )}
-        </div>
+        </div> */} 
+        
+        <div className="w-full flex items-stretch">
+  {/* Main Card */}
+  <div
+    className={`shadow-[2px_4px_4px_rgba(0,0,0,0.1)] bg-white justify-between flex w-[88%] px-6 py-4 rounded-lg border-l-8 ${
+      isActive ? "border-[rgba(250,132,31,1)]" : "border-transparent"
+    }`}
+    onClick={() => whenClicked(id)}
+  >
+    <div className="RIGHT flex flex-col h-auto min-h-[100%]">
+      <div className="text-base text-black font-medium py-2">{CheckIn}</div>
+      <img src={image} className="w-[23vw] rounded-xl py-4 pr-4" alt="" />
+    </div>
+  </div>
+
+  {/* SCROLL BAR should have the same height as the RIGHT div */}
+  {isActive && (
+    <div className="SCROLL_BAR flex flex-col justify-between items-center w-[35px] bg-[#FFFFFF] shadow-2xl rounded-lg p-3 translate-x-3 min-h-[100%]">
+      <div className="flex flex-col gap-3">
+        <button onClick={(e) => { e.stopPropagation(); onMoveUp(); }}>
+          <FaChevronUp />
+        </button>
+        <button onClick={(e) => { e.stopPropagation(); onMoveDown(); }}>
+          <FaChevronDown />
+        </button>
+      </div>
+      <button onClick={(e) => { e.stopPropagation(); onDelete(); }}>
+        <RiDeleteBin6Fill />
+      </button>
+    </div>
+  )}
+</div>
+
   
         {/* Input Field for Adding New Routine */}
       {isActive && (
         <div className="flex  mt-2">
           {showInput ? (
-            <div className="flex w-[88%] py-4 px-3 rounded-lg gap-2 shadow-[2px_4px_4px_rgba(0,0,0,0.1)] bg-white ">
+            <div className="flex w-[88%] py-4 px-3 rounded-lg gap-2 bg-white shadow-2xl ">
               <input
                 type="text"
                 className=" px-3 py-2 rounded-lg w-[88%] "

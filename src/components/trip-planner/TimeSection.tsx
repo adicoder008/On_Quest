@@ -1,5 +1,6 @@
 
 import React, { useState } from "react";
+// import { LocationIcon } from "@/components/icons/LocationIcon";
 import { 
   Collapsible, 
   CollapsibleContent, 
@@ -12,8 +13,8 @@ interface TimeSectionProps {
   icon: string;
   toggleIcon: string;
   children: React.ReactNode;
-  isOpen?: boolean;
-  onToggle?: () => void;
+  isOpen?: boolean; //optional
+  onToggle?: () => void; //optional     ? means optional
 }
 
 export const TimeSection: React.FC<TimeSectionProps> = ({
@@ -43,7 +44,7 @@ export const TimeSection: React.FC<TimeSectionProps> = ({
             <div className="text-black text-xl font-bold self-stretch my-auto">
               {title}
             </div>
-            import { LocationIcon } from "@/components/icons/LocationIcon"; 
+            {/* import { LocationIcon } from "@/components/icons/LocationIcon";  */}
           </div>
           {isOpen ? (
             <ChevronUp className="h-6 w-6 text-[#F86F0A]" />
