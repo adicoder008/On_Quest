@@ -11,6 +11,11 @@ import Trip from "./pages/Trip";
 import Feed from "./components/Feed/Index";
 import MyProfile from "./components/My-Profile/Index";
 import Quest from "./pages/Quest";
+import PostQuest from "./components/QuestPopups/PostQuest";
+import VisibleTo from "./components/QuestPopups/VisibleTo";
+import AddLocation from "./components/QuestPopups/AddLocation";
+import TagPeople from "./components/QuestPopups/TagPeople";
+import AddTags from "./components/QuestPopups/AddTags";
 
 
 
@@ -27,12 +32,17 @@ const App = () => (
     <Signup/>
     <Footer/> 
     <Quest/> */}
-    
-    
-<MyProfile/> 
 
-    <Feed/>
+    {/* <MyProfile/> */}
+
+    {/* <Feed/> */}
   
+    {/* QuestPopups---> */}
+          <PostQuest/>
+          {/* <VisibleTo/> */}
+          {/* <AddLocation/> */}
+          {/* <TagPeople/> */}
+          {/* <AddTags/> */}
   </div>
 );
 
