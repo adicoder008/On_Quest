@@ -45,7 +45,7 @@ export const createGroup = async (groupData) => {
 };
 
 // Get all groups for a user
-export const getGroups = async (userId) => {
+export const getGroups = async (uid) => {
   const q = query(groupsCollection);
   const snapshot = await getDocs(q);
   
@@ -53,7 +53,7 @@ export const getGroups = async (userId) => {
   snapshot.forEach(doc => {
     const group = doc.data();
     // Check if user is a member
-    const isMember = group.members.some(member => member.uid === userId);
+    const isMember = group.members.some(member => member.uid === uid);
     if (isMember) {
       groups.push(group);
     }
@@ -95,7 +95,7 @@ export const joinGroup = async (inviteCode, userData) => {
 };
 
 // Leave a group
-export const leaveGroup = async (groupId, userId) => {
+export const leaveGroup = async (groupId, uid) => {
   const groupRef = doc(db, 'groups', groupId);
   const groupSnap = await getDoc(groupRef);
   
@@ -106,16 +106,16 @@ export const leaveGroup = async (groupId, userId) => {
   const groupData = groupSnap.data();
   
   // Find the user's member object
-  const memberToRemove = groupData.members.find(member => member.uid === userId);
+  const memberToRemove = groupData.members.find(member => member.uid === uid);
   
   if (!memberToRemove) {
     throw new Error('You are not a member of this group');
   }
   
   // Check if user is the creator and there are other members
-  if (groupData.createdBy === userId && groupData.members.length > 1) {
+  if (groupData.createdBy === uid && groupData.members.length > 1) {
     // Transfer ownership to another member
-    const newOwner = groupData.members.find(member => member.uid !== userId);
+    const newOwner = groupData.members.find(member => member.uid !== uid);
     await updateDoc(groupRef, {
       createdBy: newOwner.uid,
       members: arrayRemove(memberToRemove)

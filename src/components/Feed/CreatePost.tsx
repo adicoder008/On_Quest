@@ -160,7 +160,7 @@ export const CreatePost = ({ onPostCreated }) => {
   
     try {
       const postData = {
-        userId: user.uid,
+        uid: user.uid,
         userName: user.displayName,
         userPhoto: user.photoURL,
         text,
@@ -183,7 +183,7 @@ export const CreatePost = ({ onPostCreated }) => {
           ...eventDetails,
           postId: postRef.id, // Reference to the original post
           createdBy: {
-            userId: user.uid,
+            uid: user.uid,
             name: userData.displayName,
             photoURL: user.photoURL
           },

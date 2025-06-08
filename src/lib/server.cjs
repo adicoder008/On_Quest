@@ -49,10 +49,10 @@ const db = getFirestore(firebaseApp);
 
 // Updated validation function to accept arrays for transportMode and tripType
 const validateTripData = (tripData) => {
-  const { userId, source, destination, startDate, endDate, transportMode, tripType, preferences } = tripData;
+  const { uid, source, destination, startDate, endDate, transportMode, tripType, preferences } = tripData;
 
-  if (!userId || typeof userId !== 'string') {
-    throw new Error('Invalid userId');
+  if (!uid || typeof uid !== 'string') {
+    throw new Error('Invalid uid');
   }
   if (!source || typeof source !== 'string') {
     throw new Error('Invalid source');
@@ -337,18 +337,18 @@ app.post('/api/generate-itinerary', async (req, res) => {
   let tripRef;
 
   try {
-    const { userId, source, destination, startDate, endDate, transportMode, tripType, preferences } = req.body;
+    const { uid, source, destination, startDate, endDate, transportMode, tripType, preferences } = req.body;
 
     // Validate trip data
     validateTripData(req.body);
 
     // Generate trip ID and reference
     const tripId = `trip_${Date.now()}`;
-    tripRef = doc(db, 'users', userId, 'trips', tripId);
+    tripRef = doc(db, 'users', uid, 'trips', tripId);
 
     // Store basic trip data
     await setDoc(tripRef, {
-      userId,
+      uid,
       source,
       destination,
       startDate,
@@ -540,11 +540,11 @@ app.post('/api/generate-itinerary', async (req, res) => {
   }
 });
 
-app.get('/api/trips/:userId/:tripId', async (req, res) => {
-  const { userId, tripId } = req.params;
+app.get('/api/trips/:uid/:tripId', async (req, res) => {
+  const { uid, tripId } = req.params;
   
   try {
-    const tripRef = doc(db, 'users', userId, 'trips', tripId);
+    const tripRef = doc(db, 'users', uid, 'trips', tripId);
     const tripSnap = await getDoc(tripRef);
     
     if (!tripSnap.exists()) {
@@ -558,11 +558,11 @@ app.get('/api/trips/:userId/:tripId', async (req, res) => {
 });
 
 // Route to delete a trip
-app.delete('/api/trips/:userId/:tripId', async (req, res) => {
-  const { userId, tripId } = req.params;
+app.delete('/api/trips/:uid/:tripId', async (req, res) => {
+  const { uid, tripId } = req.params;
   
   try {
-    const tripRef = doc(db, 'users', userId, 'trips', tripId);
+    const tripRef = doc(db, 'users', uid, 'trips', tripId);
     const tripSnap = await getDoc(tripRef);
     
     if (!tripSnap.exists()) {
@@ -626,13 +626,13 @@ app.get('/api/suggestions/:destination', async (req, res) => {
 
 
 // Route to share trip - generates a shareable link
-app.post('/api/trip/:userId/:tripId/share', async (req, res) => {
-  const { userId, tripId } = req.params;
+app.post('/api/trip/:uid/:tripId/share', async (req, res) => {
+  const { uid, tripId } = req.params;
   
-  console.log('Creating shareable link for trip ID:', tripId, 'for user:', userId);
+  console.log('Creating shareable link for trip ID:', tripId, 'for user:', uid);
   
   try {
-    const tripRef = doc(db, 'users', userId, 'trips', tripId); // Updated path
+    const tripRef = doc(db, 'users', uid, 'trips', tripId); // Updated path
     const tripSnap = await getDoc(tripRef);
     
     if (!tripSnap.exists()) {
@@ -641,7 +641,7 @@ app.post('/api/trip/:userId/:tripId/share', async (req, res) => {
     }
     
     // Generate a sharing ID or use the trip ID directly
-    const shareableLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/shared-trip/${userId}/${tripId}`;
+    const shareableLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/shared-trip/${uid}/${tripId}`;
     console.log('Generated shareable link:', shareableLink);
     
     // Update the trip document with sharing info

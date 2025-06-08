@@ -29,8 +29,7 @@ const App = () => (
     <Quest/> */}
     
     
-
-    {/* <MyProfile/> */}
+<MyProfile/> 
 
     <Feed/>
   
