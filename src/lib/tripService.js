@@ -53,7 +53,7 @@ import {
     },
   
     // Toggle like
-    async toggleLike(tripId, userId) {
+    async toggleLike(tripId, uid) {
       try {
         const tripRef = doc(db, 'trips', tripId);
         const tripSnap = await getDoc(tripRef);
@@ -62,10 +62,10 @@ import {
         
         const tripData = tripSnap.data();
         const likes = tripData.likes || [];
-        const isLiked = likes.includes(userId);
+        const isLiked = likes.includes(uid);
         
         await updateDoc(tripRef, {
-          likes: isLiked ? arrayRemove(userId) : arrayUnion(userId),
+          likes: isLiked ? arrayRemove(uid) : arrayUnion(uid),
           likesCount: increment(isLiked ? -1 : 1)
         });
         
@@ -77,9 +77,9 @@ import {
     },
   
     // Toggle save
-    async toggleSave(tripId, userId) {
+    async toggleSave(tripId, uid) {
       try {
-        const userRef = doc(db, 'users', userId);
+        const userRef = doc(db, 'users', uid);
         const userSnap = await getDoc(userRef);
         
         if (!userSnap.exists()) throw new Error('User not found');
@@ -106,9 +106,9 @@ import {
     },
   
     // Follow/Unfollow trip
-    async toggleFollow(tripId, userId) {
+    async toggleFollow(tripId, uid) {
       try {
-        const userRef = doc(db, 'users', userId);
+        const userRef = doc(db, 'users', uid);
         const userSnap = await getDoc(userRef);
         
         if (!userSnap.exists()) throw new Error('User not found');
@@ -135,7 +135,7 @@ import {
     },
   
     // Duplicate trip
-    async duplicateTrip(tripId, userId) {
+    async duplicateTrip(tripId, uid) {
       try {
         const tripRef = doc(db, 'trips', tripId);
         const tripSnap = await getDoc(tripRef);
@@ -147,7 +147,7 @@ import {
         const duplicatedTrip = {
           ...originalTrip,
           title: `Copy of ${originalTrip.title}`,
-          createdBy: userId,
+          createdBy: uid,
           createdAt: serverTimestamp(),
           updatedAt: serverTimestamp(),
           isPrivate: true, // Duplicated trips start as private

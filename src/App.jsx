@@ -32,8 +32,9 @@ const App = () => (
     <Signup/>
     <Footer/> 
     <Quest/> */}
-
-    {/* <MyProfile/> */}
+    
+    
+<MyProfile/> 
 
     {/* <Feed/> */}
   

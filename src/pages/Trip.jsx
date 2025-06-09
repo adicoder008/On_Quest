@@ -373,6 +373,7 @@ const Trip = () => {
       
       <InfoButton />
     </div>
+    
   );
 };
 
