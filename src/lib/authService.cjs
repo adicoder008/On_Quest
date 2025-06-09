@@ -8,8 +8,9 @@ import {
   signInWithPhoneNumber, 
   RecaptchaVerifier
 } from 'firebase/auth';
+import { updateProfileInfo, uploadProfilePicture, uploadBackgroundPicture } from './profileService.js';
 import { auth, db } from './firebase.cjs';
-import { doc, setDoc, getDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, getDoc,updateDoc, serverTimestamp } from 'firebase/firestore';
 
 const GOOGLE_AVATAR_OPTIONS = [
   'https://www.gstatic.com/webp/gallery/1.jpg',
@@ -63,7 +64,7 @@ const setupRecaptcha = (containerId) => {
 const signInWithEmail = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    localStorage.setItem('userId', JSON.stringify(userCredential.user.email));
+    localStorage.setItem('uid', JSON.stringify(userCredential.user.email));
     return userCredential.user;
   } catch (error) {
     console.error("Error signing in:", error);
@@ -124,7 +125,9 @@ const getCurrentUserData = async () => {
     
     const userDoc = await getDoc(doc(db, "users", user.uid));
     if (userDoc.exists()) {
-      return { uid: user.uid, ...userDoc.data() };
+      const data = { uid: user.uid, ...userDoc.data() };
+      console.log("Firestore user data:", data); // Add this line
+      return data;
     }
     return null;
   } catch (error) {
@@ -132,8 +135,8 @@ const getCurrentUserData = async () => {
     throw error;
   }
 };
-const createUserProfile = async (userId, profileData) => {
-  const userRef = doc(db, 'users', userId);
+const createUserProfile = async (uid, profileData) => {
+  const userRef = doc(db, 'users', uid);
   
   await setDoc(userRef, {
     ...profileData,
@@ -279,9 +282,9 @@ const verifyPhoneCode = async (verificationCode, displayName = null) => {
 };
 
 // Update user profile data
-const updateUserProfile = async (userId, profileData) => {
+const updateUserProfile = async (uid, profileData) => {
   try {
-    const userRef = doc(db, 'users', userId);
+    const userRef = doc(db, 'users', uid);
     await updateDoc(userRef, {
       ...profileData,
       updatedAt: serverTimestamp()
@@ -303,5 +306,8 @@ export {
   signOut,
   getCurrentUserData,
   updateUserProfile,
-  createUserProfile
+  createUserProfile,
+  updateProfileInfo,
+  uploadProfilePicture,
+  uploadBackgroundPicture
 };
