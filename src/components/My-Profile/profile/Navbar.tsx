@@ -146,35 +146,42 @@ const Navbar = () => {
     }
   };
 
-  const handleEmailSignUp = async (avatar) => {
-    try {
-      setError('');
-      setIsLoading(true);
-      
-      // Basic validation
-      if (!email || !password || !displayName) {
-        throw new Error('Please fill all fields');
-      }
+  // List of default Google avatar options
+  const GOOGLE_AVATAR_OPTIONS = [
+    "https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/f2c04753faeb06e92f8c18ca0b4f344bb630c7e7?placeholderIfAbsent=true",
+    "https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/7ba09782b451dbfbc5be2cd9243cebe4ac815288?placeholderIfAbsent=true",
+    "https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/99410d3970fe67ea532993d1c196093377128b25?placeholderIfAbsent=true"
+  ];
   
-      const finalAvatar = avatar || 
-        GOOGLE_AVATAR_OPTIONS[Math.floor(Math.random() * GOOGLE_AVATAR_OPTIONS.length)];
-      
-      await signUpWithEmail(email, password, displayName, finalAvatar);
-      
-      // Show success message
-      setError('');
-      setAuthStep('initial');
-      setShowAuthModal(false);
-      
-      // Optional: Show toast notification
-      alert('Sign up successful! Welcome to our community!');
-      
-    } catch (error) {
-      setError(error.message || 'Sign up failed. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    const handleEmailSignUp = async (avatar) => {
+      try {
+        setError('');
+        setIsLoading(true);
+        
+        // Basic validation
+        if (!email || !password || !displayName) {
+          throw new Error('Please fill all fields');
+        }
+    
+        const finalAvatar = avatar || 
+          GOOGLE_AVATAR_OPTIONS[Math.floor(Math.random() * GOOGLE_AVATAR_OPTIONS.length)];
+        
+        await signUpWithEmail(email, password, displayName, finalAvatar);
+        
+        // Show success message
+        setError('');
+        setAuthStep('initial');
+        setShowAuthModal(false);
+        
+        // Optional: Show toast notification
+        alert('Sign up successful! Welcome to our community!');
+        
+      } catch (error) {
+        setError(error.message || 'Sign up failed. Please try again.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
   const handleGoogleSignIn = async () => {
     try {
