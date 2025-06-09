@@ -16,6 +16,8 @@ import VisibleTo from "./components/QuestPopups/VisibleTo";
 import AddLocation from "./components/QuestPopups/AddLocation";
 import TagPeople from "./components/QuestPopups/TagPeople";
 import AddTags from "./components/QuestPopups/AddTags";
+import NavbarDevgambo from "./components/Navbar-d";
+import ThreeStepSignup from "./components/SignUp_d";
 
 
 
@@ -37,8 +39,9 @@ const App = () => (
 
     {/* <Feed/> */}
   
+    <ThreeStepSignup/>
     {/* QuestPopups---> */}
-          <PostQuest/>
+          {/* <PostQuest/> */}
           {/* <VisibleTo/> */}
           {/* <AddLocation/> */}
           {/* <TagPeople/> */}
