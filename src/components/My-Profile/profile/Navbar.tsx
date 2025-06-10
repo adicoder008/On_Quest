@@ -426,7 +426,7 @@ const Navbar = () => {
   };
 
   return (
-    <div className="bg-white shadow-sm hover:shadow-xl h-[76px] flex w-full items-center justify-between px-16 py-1.5 border-b border-gray-200">
+    <div className="bg-white shadow-sm hover:shadow-xl h-[64px] flex w-full items-center justify-between px-16 py- border-b border-gray-200">
       <div className="flex items-center gap-4">
         <img
           src="https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/7ba09782b451dbfbc5be2cd9243cebe4ac815288?placeholderIfAbsent=true"
@@ -452,8 +452,8 @@ const Navbar = () => {
       
       <NavigationMenu>
         <NavigationMenuList className="flex items-center gap-6">
-           <NavigationMenuItem>
-        {loading ? (
+           {/* <NavigationMenuItem> */}
+        {/* {loading ? (
           <div className="h-[48px] w-[48px] bg-gray-200 animate-pulse rounded-full"></div>
         ) : user ? (
           <div className="relative">
@@ -498,9 +498,19 @@ const Navbar = () => {
             className="w-12 h-12 rounded-full cursor-pointer"
             onClick={toggleAuthModal}
           />
-        )}
-      </NavigationMenuItem>
+        )} */}
+      {/* </NavigationMenuItem> */}
           
+          <NavigationMenuItem className="flex flex-col items-center">
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/06d56ea533aecd9a2b8ddf71ea41700f8c6b6951?placeholderIfAbsent=true"
+              alt="Groups icon"
+              className="w-5 h-5"
+              onClick={() => navigate('/My-Profile')}
+            />
+            <span className="text-xs text-gray-600 mt-1">My Profile</span>
+          </NavigationMenuItem>
+
           <NavigationMenuItem className="flex flex-col items-center">
             <img
               src="https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/06d56ea533aecd9a2b8ddf71ea41700f8c6b6951?placeholderIfAbsent=true"
@@ -509,6 +519,8 @@ const Navbar = () => {
             />
             <span className="text-xs text-gray-600 mt-1">Groups</span>
           </NavigationMenuItem>
+
+          
           
           <NavigationMenuItem className="flex flex-col items-center">
             <img
@@ -526,7 +538,7 @@ const Navbar = () => {
                 alt="Trip Planner icon"
                 className="w-5 h-5"
               />
-              <span className="text-xs text-gray-600 mt-1">Trip Planner</span>
+              <span className="text-xs text-gray-600 mt-1">Quests</span>
             </Link>
           </NavigationMenuItem>
           
@@ -551,13 +563,13 @@ const Navbar = () => {
                 <img
                   src={user.photoURL || "https://cdn.builder.io/api/v1/image/assets/b783a7681e9247dfa6d0b0f79c8d7bb8/f2c04753faeb06e92f8c18ca0b4f344bb630c7e7?placeholderIfAbsent=true"}
                   alt="User avatar"
-                  className="w-12 h-12 rounded-full cursor-pointer"
+                  className="w-10 h-10 rounded-full cursor-pointer"
                   onClick={() => setIsOpen(!isOpen)}
                 />
                 {isOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50" >
                     <div className="px-4 py-2 border-b">
-                      <p className="text-sm font-medium">{userData?.displayName || 'User'}</p>
+                      <p className="text-sm font-medium">{userData?.displayName || user?.displayName || 'User'}</p>
                       <p className="text-xs text-gray-500">{user.email}</p>
                     </div>
                     <button
@@ -583,27 +595,26 @@ const Navbar = () => {
 
       {/* Mobile Menu Button */}
       <button
-        className="md:hidden px-2"
+        className=" px-2 md:hidden"
         onClick={() => setIsOpen(true)}
       >
         <RxHamburgerMenu size={30} />
       </button>
 
       {/* Mobile Sidebar (Sliding Menu) */}
-      <div
+      {/* <div
         className={`fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300 z-30 ${
           isOpen ? "opacity-100 visible" : "opacity-0 invisible"
         }`}
         onClick={() => setIsOpen(false)}
-      ></div>
+      ></div> */}
 
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-40 ${
-          isOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`fixed top-0 left-0 h-full w-64 bg-white shadow-lg transform transition-transform duration-300 z-40 
+          -translate-x-full`}
       >
-        {/* Close Button */}
-        <button
+        {/* Close Button
+        {/* <button
           className="absolute top-4 right-4 text-gray-600"
           onClick={() => setIsOpen(false)}
         >
@@ -611,7 +622,7 @@ const Navbar = () => {
         </button>
 
         {/* Menu Items */}
-        <ul className="flex flex-col gap-6 p-6 text-lg mt-10">
+        {/* <ul className="flex flex-col gap-6 p-6 text-lg mt-10">
           <li className="hover:text-blue-500 cursor-pointer">
             <Link to="/" onClick={() => setIsOpen(false)}>Home</Link>
           </li>
@@ -626,7 +637,7 @@ const Navbar = () => {
           </li>
           <li className="hover:text-blue-500 cursor-pointer">
             <Link to="/contact" onClick={() => setIsOpen(false)}>Contact Us</Link>
-          </li>
+          </li> 
           {!user && (
             <li 
               className="hover:text-blue-500 cursor-pointer"
@@ -638,8 +649,8 @@ const Navbar = () => {
               Sign In/Up
             </li>
           )}
-        </ul>
-      </div>
+        </ul> 
+       </div> 
 
       {/* Sign In/Sign Up Modal */}
       {showAuthModal && (
@@ -699,6 +710,7 @@ const Navbar = () => {
           </div>
         </>
       )}
+    </div>
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { Post } from "../components/Feed/Post";
 import { EventCard } from "../components/Feed/EventCard";
 import { TravelerCard } from "../components/Feed/TravelerCard";
 import { onAuthStateChanged } from 'firebase/auth';
-import Navbar from "../components/Navbar";
+import Navbar from "@/components/My-Profile/profile/Navbar";
 import { useEffect, useState } from "react";
 import { auth } from '../lib/firebase.cjs';
 import { getCurrentUserData } from '../lib/authService.cjs';
